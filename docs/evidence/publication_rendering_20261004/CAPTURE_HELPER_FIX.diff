@@ -1,0 +1,12 @@
+--- capture_plot_data.original.py
++++ capture_plot_data.fixed.py
+@@ -57,8 +57,7 @@
+                 nonlocal depth
+                 if depth:
+                     return function(ax, *args, **kwargs)
+-                bound = sig.bind_partial(ax, *args, **kwargs)
+-                bound.apply_defaults()
++                # Let the original Matplotlib callable validate its arguments.
+                 depth += 1
+                 try:
+                     result = function(ax, *args, **kwargs)

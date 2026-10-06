@@ -1,0 +1,109 @@
+target_user,train_condition,stream_condition,seed,reason
+526319,READING+SITTING,MAP+WALKING,42,load_streaming_data_returned_none
+526319,READING+WALKING,MAP+WALKING,42,load_streaming_data_returned_none
+526319,WRITING+SITTING,MAP+WALKING,42,load_streaming_data_returned_none
+526319,WRITING+WALKING,MAP+WALKING,42,load_streaming_data_returned_none
+526319,MAP+SITTING,MAP+WALKING,42,load_streaming_data_returned_none
+526319,MAP+WALKING,MAP+WALKING,42,load_streaming_data_returned_none
+526319,READING+SITTING,MAP+WALKING,123,load_streaming_data_returned_none
+526319,READING+WALKING,MAP+WALKING,123,load_streaming_data_returned_none
+526319,WRITING+SITTING,MAP+WALKING,123,load_streaming_data_returned_none
+526319,WRITING+WALKING,MAP+WALKING,123,load_streaming_data_returned_none
+526319,MAP+SITTING,MAP+WALKING,123,load_streaming_data_returned_none
+526319,MAP+WALKING,MAP+WALKING,123,load_streaming_data_returned_none
+526319,READING+SITTING,MAP+WALKING,456,load_streaming_data_returned_none
+526319,READING+WALKING,MAP+WALKING,456,load_streaming_data_returned_none
+526319,WRITING+SITTING,MAP+WALKING,456,load_streaming_data_returned_none
+526319,WRITING+WALKING,MAP+WALKING,456,load_streaming_data_returned_none
+526319,MAP+SITTING,MAP+WALKING,456,load_streaming_data_returned_none
+526319,MAP+WALKING,MAP+WALKING,456,load_streaming_data_returned_none
+561993,READING+WALKING,READING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,READING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,WRITING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,WRITING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,MAP+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,MAP+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,READING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,READING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,WRITING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,WRITING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,MAP+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,MAP+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,READING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,READING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,WRITING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,WRITING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,MAP+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+561993,READING+WALKING,MAP+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,READING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,READING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,WRITING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,WRITING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,MAP+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,MAP+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,READING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,READING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,WRITING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,WRITING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,MAP+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,MAP+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,READING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,READING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,WRITING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,WRITING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,MAP+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+578526,READING+WALKING,MAP+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,READING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,READING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,WRITING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,WRITING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,MAP+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,MAP+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,READING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,READING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,WRITING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,WRITING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,MAP+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,MAP+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,READING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,READING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,WRITING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,WRITING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,MAP+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+776328,READING+WALKING,MAP+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+796581,READING+SITTING,READING+SITTING,42,load_streaming_data_returned_none
+796581,READING+WALKING,READING+SITTING,42,load_streaming_data_returned_none
+796581,WRITING+SITTING,READING+SITTING,42,load_streaming_data_returned_none
+796581,WRITING+WALKING,READING+SITTING,42,load_streaming_data_returned_none
+796581,MAP+SITTING,READING+SITTING,42,load_streaming_data_returned_none
+796581,MAP+WALKING,READING+SITTING,42,load_streaming_data_returned_none
+796581,READING+SITTING,READING+SITTING,123,load_streaming_data_returned_none
+796581,READING+WALKING,READING+SITTING,123,load_streaming_data_returned_none
+796581,WRITING+SITTING,READING+SITTING,123,load_streaming_data_returned_none
+796581,WRITING+WALKING,READING+SITTING,123,load_streaming_data_returned_none
+796581,MAP+SITTING,READING+SITTING,123,load_streaming_data_returned_none
+796581,MAP+WALKING,READING+SITTING,123,load_streaming_data_returned_none
+796581,READING+SITTING,READING+SITTING,456,load_streaming_data_returned_none
+796581,READING+WALKING,READING+SITTING,456,load_streaming_data_returned_none
+796581,WRITING+SITTING,READING+SITTING,456,load_streaming_data_returned_none
+796581,WRITING+WALKING,READING+SITTING,456,load_streaming_data_returned_none
+796581,MAP+SITTING,READING+SITTING,456,load_streaming_data_returned_none
+796581,MAP+WALKING,READING+SITTING,456,load_streaming_data_returned_none
+841866,READING+WALKING,READING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,READING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,WRITING+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,WRITING+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,MAP+SITTING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,MAP+WALKING,42,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,READING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,READING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,WRITING+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,WRITING+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,MAP+SITTING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,MAP+WALKING,123,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,READING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,READING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,WRITING+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,WRITING+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,MAP+SITTING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error
+841866,READING+WALKING,MAP+WALKING,456,ValueError: the number of columns changed from 7 to 2 at row 53859; use `usecols` to select a subset and avoid this error

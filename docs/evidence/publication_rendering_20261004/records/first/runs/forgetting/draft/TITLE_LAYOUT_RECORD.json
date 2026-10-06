@@ -1,0 +1,18 @@
+[
+  {
+    "png": "forgetting_histogram_m2.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Histogram of End-of-Stream EER Differences (M2 - M1)",
+        "normalized_bbox": [
+          0.256814236111111,
+          0.934,
+          0.823845486111111,
+          0.97
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  }
+]

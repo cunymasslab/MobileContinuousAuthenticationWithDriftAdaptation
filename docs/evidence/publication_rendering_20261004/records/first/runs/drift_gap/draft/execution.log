@@ -1,0 +1,41 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_drift_gap_figure.py", "inputs/results_stage4b_cv_summary.csv"]
+Started UTC: 2026-10-04T22:15:35.786115+00:00
+
+data rows: 50
+columns (14):
+  - target_user
+  - condition
+  - train_condition
+  - stream_condition
+  - seed
+  - n_train_windows
+  - n_val_windows
+  - n_heldout_windows
+  - n_session4_windows
+  - impostor_pairs_attempted
+  - impostor_pairs_used
+  - within_eer
+  - session4_eer
+  - drift_gap
+
+Median values (vs expected):
+  within_eer      actual=0.069  expected=0.069  diff=+0.000  OK
+  session4_eer    actual=0.416  expected=0.416  diff=+0.000  OK
+  drift_gap       actual=0.319  expected=0.319  diff=+0.000  OK
+
+Drift gap range checks:
+  drift_gap > 0.50    :  38.0%   (draft claims ~38%)
+  drift_gap < 0.10    :  28.0%   (draft claims ~28%)
+
+Per-category counts and median drift_gap:
+  temporal         n= 10   median drift_gap=0.128
+  cross-posture    n=  0   median drift_gap=NaN (no rows in category)
+  cross-activity   n= 20   median drift_gap=0.235
+  cross-both       n= 20   median drift_gap=0.463
+
+Wrote figures:
+  figures/drift_gap_distribution.png
+  figures/drift_gap_distribution.pdf
+Numerical plotting trace saved for 1 PNG outputs.
+
+Exit status: 0

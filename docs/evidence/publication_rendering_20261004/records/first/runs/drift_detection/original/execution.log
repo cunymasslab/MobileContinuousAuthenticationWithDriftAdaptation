@@ -1,0 +1,61 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_drift_detection_figure.py", "inputs/results_drift_detection.csv"]
+Started UTC: 2026-10-04T22:15:32.976427+00:00
+
+data rows: 50
+columns (10):
+  - target_user
+  - train_condition
+  - stream_condition
+  - n_train_windows
+  - n_session4_windows
+  - n_significant_ks
+  - mean_ks_stat
+  - max_ks_stat
+  - classifier_accuracy
+  - drift_gap
+
+Per-category counts:
+  temporal         n= 10
+  cross-posture    n=  0  (expected absent from this subset)
+  cross-activity   n= 20
+  cross-both       n= 20
+
+Per-category medians:
+  temporal          mean_ks=0.259  clf_acc=0.912  n_sig_ks=10.0
+  cross-activity    mean_ks=0.396  clf_acc=0.991  n_sig_ks=11.0
+  cross-both        mean_ks=0.567  clf_acc=0.999  n_sig_ks=12.0
+
+Overall summary:
+  mean_ks_stat range            : [0.210, 0.774]
+    (draft claims 0.21 to 0.77)
+  classifier_accuracy > 0.95    :  74.0% of rows
+    (draft claims "exceeds 0.95 for most users")
+
+Traceback (most recent call last):
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/drift_detection/original/capture_plot_data.py", line 139, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/drift_detection/original/capture_plot_data.py", line 125, in main
+    runpy.run_path(str(target), run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/drift_detection/original/generate_drift_detection_figure.py", line 193, in <module>
+    main()
+    ~~~~^^
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/drift_detection/original/generate_drift_detection_figure.py", line 160, in main
+    bp = ax.boxplot(data, labels=plot_cats, patch_artist=True,
+                    widths=0.6, showfliers=True)
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/drift_detection/original/capture_plot_data.py", line 60, in wrapped
+    bound = sig.bind_partial(ax, *args, **kwargs)
+  File "<COMPUTE_B_HOME>/miniconda/lib/python3.13/inspect.py", line 3271, in bind_partial
+    return self._bind(args, kwargs, partial=True)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<COMPUTE_B_HOME>/miniconda/lib/python3.13/inspect.py", line 3253, in _bind
+    raise TypeError(
+        'got an unexpected keyword argument {arg!r}'.format(
+            arg=next(iter(kwargs))))
+TypeError: got an unexpected keyword argument 'labels'
+
+Exit status: 1

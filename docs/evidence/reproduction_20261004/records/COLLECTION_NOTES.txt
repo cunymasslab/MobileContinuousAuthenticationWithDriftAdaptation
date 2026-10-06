@@ -1,0 +1,12 @@
+Private collection of reproduction code and verification records
+Collected UTC: 2026-10-04T18:48:25.924362+00:00
+Execution location: Compute B
+
+All selected files were copied without editing.
+No analysis, statistical comparison, or model training was rerun.
+The matched-stream byte-comparison failure and its diff are retained.
+Existing warnings are preserved; collection does not resolve them.
+The environment files describe the new reproduction environment,
+not an independently established historical experiment environment.
+Raw datasets, full shell history, and environment binaries are excluded.
+Logs contain private paths: review before repository upload.

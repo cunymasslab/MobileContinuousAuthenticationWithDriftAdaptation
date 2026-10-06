@@ -1,0 +1,15 @@
+--- saved_reference
++++ reproduced_report
+@@ -6,10 +6,10 @@
+ rows: 9396   unique users: 88
+ rows by category:
+ pair_category
++cross-both        3132
+ cross-activity    3132
+-cross-both        3132
++cross-posture     1566
+ temporal          1566
+-cross-posture     1566
+ 
+ ========================================================================
+ E1) Missingness audit

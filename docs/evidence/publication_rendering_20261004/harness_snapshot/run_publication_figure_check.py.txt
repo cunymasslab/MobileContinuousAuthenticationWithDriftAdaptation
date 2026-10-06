@@ -1,0 +1,212 @@
+"""Test reconstructed presentation revisions separately from manuscript image identity.
+
+Original and draft renderers execute on identical copied CSV inputs in separate
+new directories. No models train; no raw dataset is needed. Plot calculations
+(including their bootstrap loops) execute once per version to compare actual
+numeric payloads. References and previously failed records are never rewritten.
+"""
+from pathlib import Path, PurePosixPath
+from zipfile import ZipFile, ZIP_DEFLATED
+from datetime import datetime, timezone
+from importlib.metadata import version, PackageNotFoundError
+import argparse
+import hashlib
+import json
+import os
+import platform
+import subprocess
+import sys
+import tempfile
+import time
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_new(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('xb') as stream:
+        stream.write(data)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--check-only', action='store_true')
+    parser.add_argument('--work-parent', type=Path, default=Path.home())
+    args = parser.parse_args()
+    root = Path(__file__).resolve().parent
+    manifest = root/'BUNDLE_MANIFEST.sha256'
+    contents = {}
+    for line in manifest.read_text().splitlines():
+        sha, name = line.split('  ', 1)
+        path = PurePosixPath(name)
+        if path.is_absolute() or '..' in path.parts or '\\' in name or name in contents:
+            raise ValueError('Unsafe or duplicate bundle path.')
+        src = root/name
+        if src.is_symlink() or not src.is_file() or root not in src.resolve().parents:
+            raise ValueError('Missing or unsafe bundle file: '+name)
+        data = src.read_bytes()
+        if digest(data) != sha:
+            raise ValueError('Bundle hash mismatch: '+name)
+        contents[name] = data
+    config = json.loads(contents['FIGURE_MAP.json'])
+    for task in config['tasks']:
+        names = [task['script'], 'publication_draft/'+PurePosixPath(task['script']).name]
+        names += [entry['bundle'] for entry in task['inputs']]
+        if any(name not in contents for name in names):
+            raise ValueError('Missing task source or input.')
+    if any(item['reference'] not in contents for item in config['manuscript_images']):
+        raise ValueError('Missing manuscript reference.')
+    print(f'Bundle manifest: {len(contents)} of {len(contents)} files MATCH', flush=True)
+    if args.check_only:
+        print('CHECK ONLY: no renderer or analysis was executed.')
+        return 0
+    required = {'numpy':'2.2.6','pandas':'2.2.3','scipy':'1.15.3',
+                'matplotlib':'3.10.3','pillow':'12.3.0'}
+    installed = {name:version(name) for name in required}
+    if sys.version_info[:3] != (3,13,2) or installed != required:
+        raise ValueError('Environment differs. No renderers executed. Python='+platform.python_version()
+                         +'; packages='+json.dumps(installed,sort_keys=True))
+    from PIL import Image
+    parent = args.work_parent.expanduser().resolve()
+    if not parent.is_dir():
+        raise ValueError('Working parent must already exist.')
+    os.umask(0o077)
+    work = Path(tempfile.mkdtemp(prefix='tifs_publication_check_', dir=str(parent)))
+    print('New private working folder:',work,flush=True)
+    audit={'started_utc':datetime.now(timezone.utc).isoformat(),
+           'python':platform.python_version(),'interpreter':sys.executable,
+           'platform':platform.platform(),'packages':installed,
+           'original_source_commit':config['source_commit'],
+           'draft_status':'new presentation-only reconstruction, not historical-source recovery',
+           'input_manifest_sha256':digest(manifest.read_bytes()),
+           'tasks':[],'numeric_comparisons':[],'image_comparisons':[]}
+    for name in ('FIGURE_MAP.json','PRESENTATION_CHANGES.diff','PRESENTATION_EDITS.json',
+                 'STATIC_CHECKS.json','README.md'):
+        write_new(work/name,contents[name])
+    write_new(work/'INPUT_BUNDLE_MANIFEST.sha256',manifest.read_bytes())
+    for name in ('run_publication_figure_check.py','capture_plot_data.py'):
+        write_new(work/('harness_snapshot/'+name+'.txt'),contents[name])
+    directories={}
+    all_execution_ok=True
+    for task in config['tasks']:
+        for variant, subdir in [('original','source_snapshot'),('draft','publication_draft')]:
+            directory=work/'runs'/task['id']/variant
+            directory.mkdir(parents=True,exist_ok=False)
+            directories[(task['id'],variant)]=directory
+            basename=PurePosixPath(task['script']).name
+            staged={basename:contents[subdir+'/'+basename],
+                    'capture_plot_data.py':contents['capture_plot_data.py']}
+            staged.update({entry['staged']:contents[entry['bundle']] for entry in task['inputs']})
+            for name,data in staged.items():
+                write_new(directory/name,data); (directory/name).chmod(0o400)
+            env=os.environ.copy()
+            env.update(PYTHONDONTWRITEBYTECODE='1',MPLBACKEND='Agg',
+                       MPLCONFIGDIR=str(directory/'_matplotlib_config'))
+            cmd=[sys.executable,'-I','-B','-u','capture_plot_data.py',basename]+task['arguments']
+            print('Running:',task['id'],variant,flush=True)
+            log=directory/'execution.log'; start=time.monotonic()
+            with log.open('x',encoding='utf-8') as stream:
+                stream.write('Command: '+json.dumps(cmd)+'\n')
+                stream.write('Started UTC: '+datetime.now(timezone.utc).isoformat()+'\n\n'); stream.flush()
+                try:
+                    result=subprocess.run(cmd,cwd=directory,env=env,stdout=stream,
+                                          stderr=subprocess.STDOUT,timeout=600)
+                    status=result.returncode
+                except subprocess.TimeoutExpired:
+                    status=124; stream.write('\nTIMEOUT: 600 seconds.\n')
+                stream.write(f'\nExit status: {status}\n')
+            changed=[name for name,data in staged.items()
+                     if not (directory/name).is_file() or (directory/name).read_bytes()!=data]
+            expected=task['expected_outputs']+['NUMERICAL_PLOT_TRACE.json','TITLE_LAYOUT_RECORD.json']
+            missing=[name for name in expected if not (directory/name).is_file()]
+            record={'id':task['id'],'variant':variant,'command':cmd,'exit_status':status,
+                    'elapsed_seconds':round(time.monotonic()-start,3),
+                    'staged_files_changed':changed,'missing_outputs':missing,
+                    'staged_sha256':{n:digest(d) for n,d in staged.items()}}
+            audit['tasks'].append(record)
+            ok=status==0 and not changed and not missing
+            all_execution_ok &= ok
+            print(f'  exit={status}; changed files={len(changed)}; missing outputs={len(missing)}',flush=True)
+            if not ok:
+                print(log.read_text(errors='replace')[-12000:],flush=True)
+    print('\n===== NUMERICAL PLOT PAYLOAD: ORIGINAL vs DRAFT =====',flush=True)
+    numeric_ok=True
+    for task in config['tasks']:
+        paths=[directories[(task['id'],v)]/'NUMERICAL_PLOT_TRACE.json' for v in ('original','draft')]
+        record={'task':task['id'],'comparison_scope':'original vs draft plotted geometry and data, not historical reference values'}
+        equal=False
+        if all(p.is_file() for p in paths):
+            values=[json.loads(p.read_text()) for p in paths]
+            equal=values[0]==values[1]
+            record.update(exact_numeric_payload_equal=equal,
+                          original_trace_sha256=digest(paths[0].read_bytes()),
+                          draft_trace_sha256=digest(paths[1].read_bytes()))
+        else:
+            record['exact_numeric_payload_equal']=False
+            record['reason']='trace missing'
+        audit['numeric_comparisons'].append(record); numeric_ok &= equal
+        print(task['id']+': '+('EXACT payload match' if equal else 'REVIEW REQUIRED'),flush=True)
+    print('\n===== DRAFT vs UNCHANGED MANUSCRIPT PNG =====',flush=True)
+    pixels_ok=True
+    for item in config['manuscript_images']:
+        target=directories[(item['task'],'draft')]/item['generated']
+        ref=work/item['reference']; write_new(ref,contents[item['reference']])
+        record={'image':ref.name,'reference_sha256':digest(ref.read_bytes())}
+        equal=False
+        if target.is_file():
+            record['draft_sha256']=digest(target.read_bytes())
+            record['byte_identical']=target.read_bytes()==ref.read_bytes()
+            with Image.open(ref) as ri, Image.open(target) as di:
+                ra,da=ri.convert('RGBA'),di.convert('RGBA')
+                equal=ra.size==da.size and ra.tobytes()==da.tobytes()
+                record.update(reference_dimensions=list(ra.size),draft_dimensions=list(da.size))
+        record['exact_decoded_pixel_match']=equal
+        record['status']='exact decoded-pixel match' if equal else 'visual review still required'
+        audit['image_comparisons'].append(record); pixels_ok &= equal
+        print(ref.name+': '+record['status'],flush=True)
+    audit.update(all_executions_ok=bool(all_execution_ok),
+                 all_original_vs_draft_numeric_payloads_equal=bool(numeric_ok),
+                 all_draft_vs_manuscript_pngs_pixel_identical=bool(pixels_ok),
+                 finished_utc=datetime.now(timezone.utc).isoformat(),
+                 boundary='New numeric-regression check is separate from the unchanged strict image comparison. '
+                 'Reference statistical plot data are not reconstructed from pixels. No pixel failure is overridden. '
+                 'No model training, hypothesis testing beyond computations already in the plotting scripts, '
+                 'manuscript editing or repository writing was performed. PDFs are generated but not reference-compared.')
+    write_new(work/'PUBLICATION_RENDER_CHECK.json',(json.dumps(audit,indent=2)+'\n').encode())
+    export=[work/name for name in ('PUBLICATION_RENDER_CHECK.json','FIGURE_MAP.json',
+        'PRESENTATION_CHANGES.diff','PRESENTATION_EDITS.json','STATIC_CHECKS.json','README.md','INPUT_BUNDLE_MANIFEST.sha256')]
+    export+=sorted((work/'harness_snapshot').glob('*.txt'))
+    export+=sorted((work/'manuscript_reference').glob('*.png'))
+    for task in config['tasks']:
+        for variant in ('original','draft'):
+            directory=directories[(task['id'],variant)]
+            export+=[directory/'execution.log']
+            export+=[directory/n for n in task['expected_outputs']+['NUMERICAL_PLOT_TRACE.json','TITLE_LAYOUT_RECORD.json']
+                     if (directory/n).is_file()]
+            script=directory/PurePosixPath(task['script']).name
+            snapshot=work/'renderer_snapshot'/variant/(script.name+'.txt')
+            write_new(snapshot,script.read_bytes()); export.append(snapshot)
+    hashes=''.join(f'{digest(p.read_bytes())}  {p.relative_to(work).as_posix()}\n' for p in sorted(export))
+    write_new(work/'OUTPUT_MANIFEST.sha256',hashes.encode()); export.append(work/'OUTPUT_MANIFEST.sha256')
+    archive=work/'tifs_publication_render_outputs.zip'
+    with ZipFile(archive,'x',compression=ZIP_DEFLATED) as bundle:
+        for path in export:
+            bundle.write(path,path.relative_to(work).as_posix())
+    print('\nExecutions and copied-input checks passed:',bool(all_execution_ok))
+    print('Original/draft numerical plotting payloads match:',bool(numeric_ok))
+    print('Strict manuscript pixel comparisons all pass:',bool(pixels_ok))
+    print('Private output ZIP:',archive)
+    print('ZIP SHA-256:',digest(archive.read_bytes()))
+    print('Preserve outputs for review. Manuscript and repository are unchanged.')
+    if not all_execution_ok or not numeric_ok:
+        return 3
+    return 0 if pixels_ok else 2
+
+
+if __name__=='__main__':
+    try:
+        raise SystemExit(main())
+    except (OSError,ValueError,KeyError,PackageNotFoundError) as error:
+        raise SystemExit('STOP: '+str(error))

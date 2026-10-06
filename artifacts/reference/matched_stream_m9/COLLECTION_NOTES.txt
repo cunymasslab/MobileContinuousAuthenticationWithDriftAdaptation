@@ -1,0 +1,11 @@
+Private matched-stream and M9 collection
+Collected UTC: 2026-10-04T00:05:13.231035+00:00
+Execution location: Compute B
+Files copied without modification; no analyses executed.
+Hashes identify the bytes collected now, not a new scientific audit.
+Source snapshots are not automatically established as producing versions.
+Raw datasets and per-window detail files are excluded.
+Review reports and logs for private information before distribution.
+
+Optional files not found:
+None

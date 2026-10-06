@@ -1,0 +1,122 @@
+==============================================================================
+M7 REPAIR SUMMARY-LEVEL ACCEPTANCE AUDIT
+==============================================================================
+Canonical file: <COMPUTE_B_HOME>/rtrl_from_scratch/stage4_backup_20260410/results_stage4_merged_summary_with_m7.csv
+Canonical SHA-256: 202095220d25d41d20aed06a007318d7244458dfbdae6aadc5611c34e2c86c77
+Repair file:    <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk1_summary.csv
+Repair SHA-256: 20ff7897757d5cc6e924bd54ada9d06362440af4deba2bfb2856fd840bf388f1
+Repair file:    <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk2_summary.csv
+Repair SHA-256: f316248c88bcac0d3bc1f41aea9e78a407b956b4e41a0e9f2273aa5770b755fd
+
+=== BASIC COVERAGE ===
+Canonical rows:             9,558
+Combined repair rows:       1,728
+Repair target users:        16
+Repair duplicate keys:      0
+
+=== SUCCESS / FAILURE STRUCTURE ===
+Repair successful:          1,656
+Repair failure stubs:       72
+Repair partial-model rows:  0
+Historical successful:      1,656
+Historical failure stubs:   72
+Historical partial rows:    0
+Failure-key sets identical: True
+
+Repair failures by target user:
+target_user
+219303    72
+
+Repair failures by seed:
+seed
+42     24
+123    24
+456    24
+
+Repair failures by drift category:
+pair_category
+cross-activity    24
+cross-both        24
+cross-posture     12
+temporal          12
+
+=== CRITICAL METADATA COMPARISON ===
+pair_category            mismatches=    0
+train_sessions           mismatches=    0
+stream_session           mismatches=    0
+stream_legit_count       mismatches=    0
+stream_impostor_count    mismatches=    0
+total_windows            mismatches=    0
+
+=== M6 REPAIR VERSUS HISTORICAL NUMERIC COMPARISON ===
+M6_overall_eer           mismatches=    0 max_abs_diff=0
+M6_initial_eer           mismatches=    0 max_abs_diff=0
+M6_end_eer               mismatches=    0 max_abs_diff=0
+M6_recovery              mismatches=    0 max_abs_diff=0
+M6_accuracy              mismatches=    0 max_abs_diff=0
+M6_precision             mismatches=    0 max_abs_diff=0
+M6_recall                mismatches=    0 max_abs_diff=0
+M6_f1                    mismatches=    0 max_abs_diff=0
+M6_mcc                   mismatches=    0 max_abs_diff=0
+M6_auc_roc               mismatches=    0 max_abs_diff=0
+
+=== M8 REPAIR VERSUS HISTORICAL NUMERIC COMPARISON ===
+M8_overall_eer           mismatches=    0 max_abs_diff=0
+M8_initial_eer           mismatches=    0 max_abs_diff=0
+M8_end_eer               mismatches=    0 max_abs_diff=0
+M8_recovery              mismatches=    0 max_abs_diff=0
+M8_accuracy              mismatches=    0 max_abs_diff=0
+M8_precision             mismatches=    0 max_abs_diff=0
+M8_recall                mismatches=    0 max_abs_diff=0
+M8_f1                    mismatches=    0 max_abs_diff=0
+M8_mcc                   mismatches=    0 max_abs_diff=0
+M8_auc_roc               mismatches=    0 max_abs_diff=0
+
+=== OLD M7 VERSUS REPAIRED M7 FOR CHUNKS 1–2 ===
+Comparable configurations: 1,656
+Mean new-minus-old M7:     +0.001185355316
+Mean absolute difference:  0.022739592546
+Maximum absolute diff:     0.334080717489
+Changed beyond 1e-12:     1,368
+
+=== SUMMARY CONTROL VERDICT ===
+Metadata exact:             True
+M6 metrics reproduced:      True
+M8 metrics reproduced:      True
+Historical failures match: True
+
+=== CANDIDATE FULL 89-USER RESULTS ===
+Successful configurations: 9,216
+Distinct target users:      89
+Mean M6 EER:               0.295290975942
+Mean repaired M7 EER:      0.091077444225
+Mean M8 EER:               0.090555261218
+Mean M7-minus-M8:          +0.000522183007
+Median M7-minus-M8:        +0.000000000000
+Mean absolute difference:  0.002987483621
+Maximum absolute diff:     0.120370370370
+M7 lower / M8 lower / ties: 2,294 / 3,322 / 3,600
+Mean RTRL benefit:         0.204213531718
+Mean BPTT benefit:         0.204735714725
+Mean benefit difference:   -0.000522183007
+
+=== USER-WEIGHTED VIEW ===
+Mean user M7 EER:          0.091218737683
+Mean user M8 EER:          0.090704643691
+Mean user M7-minus-M8:     +0.000514093992
+Median user M7-minus-M8:   +0.000554541112
+
+=== BY DRIFT CATEGORY ===
+cross-activity   n=3072 | M7=0.081976822238 | M8=0.081406996409 | M7-M8=+0.000569825829
+cross-both       n=3072 | M7=0.113001054127 | M8=0.112365352503 | M7-M8=+0.000635701624
+cross-posture    n=1536 | M7=0.099126303086 | M8=0.098703397706 | M7-M8=+0.000422905380
+temporal         n=1536 | M7=0.057382609530 | M8=0.057083471776 | M7-M8=+0.000299137754
+
+=== EFFECT OF THE REPAIR ON THE FULL M7 MEAN ===
+Old full M7 mean:          0.090864450691
+Repaired full M7 mean:     0.091077444225
+Change in full M7 mean:    +0.000212993533
+
+PASS: summary-level repair controls reproduced M6 and M8,
+the historical failure keys matched, and the repaired M7 values
+can proceed to the per-window detail-level acceptance audit.

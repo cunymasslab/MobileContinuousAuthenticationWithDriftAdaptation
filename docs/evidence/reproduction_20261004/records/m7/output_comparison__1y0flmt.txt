@@ -1,0 +1,31 @@
+===== M7 OUTPUT COMPARISON =====
+Checked UTC: 2026-10-03T23:47:25.250177+00:00
+CSV criterion: exact byte equality; no numerical tolerance.
+
+m7_m8_overall_statistics.csv
+  Reference matches recorded hash: True
+  Reproduced SHA-256: 1517e33ce01ffb253a2c58b51149d6daf98af2921929f09e38645822327ab7b1
+  Byte-for-byte identical: True
+
+m7_m8_by_category.csv
+  Reference matches recorded hash: True
+  Reproduced SHA-256: 3cd87286912bfa819a805e1611817bd1d55a186015878fafb362ab32581d045c
+  Byte-for-byte identical: True
+
+m7_m8_user_level_values.csv
+  Reference matches recorded hash: True
+  Reproduced SHA-256: 5941ed798e83399a7d579680acf2b61edfc3f9596654ba15db0fddb4c9fc460f
+  Byte-for-byte identical: True
+
+m7_m8_user_category_values.csv
+  Reference matches recorded hash: True
+  Reproduced SHA-256: 23017203dfab7aff57b56481542a56fe21da87d6f36834e3795a980622049057
+  Byte-for-byte identical: True
+
+m7_m8_statistical_closure.txt
+  Reference matches recorded hash: True
+  Reproduced SHA-256: 8f4b12c8bd624ff6307a2211659604f65e6a527a9d6a30fcb1a56d714d3ccd96
+  Identical except for input-path text: True
+
+PASS: All four CSVs match exactly, and the report matches apart from its input path.
+No analysis was rerun and no result file was modified.

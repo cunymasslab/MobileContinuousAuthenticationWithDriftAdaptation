@@ -1,0 +1,48 @@
+[
+  {
+    "png": "drift_detection_boxplots.png",
+    "bbox_inches": null,
+    "titles": [
+      {
+        "text": "Mean KS Statistic",
+        "normalized_bbox": [
+          0.1324626068376069,
+          0.8624999999999999,
+          0.2435202991452992,
+          0.9
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Max KS Statistic",
+        "normalized_bbox": [
+          0.4683760683760684,
+          0.8624999999999999,
+          0.5710683760683761,
+          0.9
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Classifier Accuracy",
+        "normalized_bbox": [
+          0.791020299145299,
+          0.8624999999999999,
+          0.9118856837606836,
+          0.9
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Drift Magnitude by Category (50-Combination Cross-Validation Subset)",
+        "normalized_bbox": [
+          0.27442307692307694,
+          0.9825,
+          0.7255769230769231,
+          1.02
+        ],
+        "inside_nominal_canvas": false
+      }
+    ]
+  }
+]

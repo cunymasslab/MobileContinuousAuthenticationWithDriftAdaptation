@@ -1,0 +1,29 @@
+===== M9 SWEEP COMPARISON REPRODUCTION =====
+Started UTC: 2026-10-04T18:43:49.165723+00:00
+Python: 3.13.2
+NumPy: 2.2.6
+Command: <COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python -I -B -u reproduce_m9_comparison.py
+Only the extracted comparison functions are executed.
+Original training-driver startup is not executed.
+
+b9499b0785d925440efaa60506f326776933782fc8d01ae421d3275bf4abb5f2  source_snapshot/run_m9_lr_sweep.py.txt
+e36af2ac3535f29ba0dea48ef62b49f45a6b1300c36d357ba510a305300cdb0f  validation_users.txt
+ba18ffaeb95ff02927dc039653c5edd78261e60851ebadd61e9a6316ab07dfd8  reference/comparison.csv
+db0472d3736f5103ae812a842d8ea1dd5874546a95a89eb555c1a84c95b69ca1  results_m9_lr_sweep/M2_lr_0.002_summary.csv
+5d63ecaf9c446ed88a213f36e8b404ec36ed84fcb69e4db3bb51d7e034a59505  results_m9_lr_sweep/M9_lr_0.0001_summary.csv
+1f12d7e74201fff83a92a11fc5b479bedec25f0c1dd617b589d0dee1e39bb609  results_m9_lr_sweep/M9_lr_0.0005_summary.csv
+561393f61b822771938d87ea35d9b8ead275183cfff61a01ef11dc15927b97b7  results_m9_lr_sweep/M9_lr_0.001_summary.csv
+f16fe8cdeaa1e4b2d23f122953c8eadfe6fa5ed76193a42f2c70d0c9015bdae6  results_m9_lr_sweep/M9_lr_0.002_summary.csv
+50aadce3c5450182fa2c3e64371e0d1bb364b1cd13eb8fb941ed2edff7f5762a  reproduce_m9_comparison.py
+
+
+Comparison CSV: results_m9_lr_sweep/comparison.csv
+  model        lr     n   mean_eer      std
+  M2        0.002   330     0.1508   0.1211
+  M9       0.0001   330     0.3208   0.2144
+  M9       0.0005   330     0.2583   0.1789
+  M9        0.001   330     0.2098   0.1513
+  M9        0.002   330     0.1599   0.1233
+
+Analysis exit status: 0
+Elapsed seconds: 0.17

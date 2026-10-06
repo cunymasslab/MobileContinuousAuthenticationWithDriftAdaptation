@@ -1,0 +1,45 @@
+{
+  "generate_confound_figures.py": {
+    "original_sha256": "987a52041aa549562227b677e125e73f303871bba9c5a213ddf900c0930adb06",
+    "draft_sha256": "94387b24ffc68d94a2a6d906844c91799fefebb0a700b5fe80e234a41bd6df16",
+    "declared_text_edits_only": true,
+    "unchanged_top_level_function_ASTs": [
+      "require_cols",
+      "cluster_bootstrap_point_ci",
+      "per_category_bootstrap",
+      "seed_averaged",
+      "err_lohi",
+      "points",
+      "fig5_eer_comparison",
+      "main"
+    ]
+  },
+  "generate_drift_detection_figure.py": {
+    "original_sha256": "82527e8337a25033b0694075e0be9b6e22e3081d359e1b592096cb5de7f38a4f",
+    "draft_sha256": "f7e9e3d257575fddd2da4c361fdf10f87fb7be5710c6cec7500084b5139af64a",
+    "declared_text_edits_only": true,
+    "unchanged_top_level_function_ASTs": [
+      "classify_pair"
+    ]
+  },
+  "generate_drift_gap_figure.py": {
+    "original_sha256": "2526ede135061aedc4b5f28afc313d41ec9dd8685ddb03197e549f29ac328c32",
+    "draft_sha256": "7bda9982b33e70af65871ae1b23cbd3d3809604dd7cd2d88046a83dbfd9a5fbb",
+    "declared_text_edits_only": true,
+    "unchanged_top_level_function_ASTs": [
+      "classify_pair"
+    ]
+  },
+  "generate_forgetting_histogram.py": {
+    "original_sha256": "baef4a8c1c877e50a4bd9145410e8ce74c0c1d3bf7dcc449d579edea79daa62a",
+    "draft_sha256": "39bcdb02b548b95311b8df8155e2f05434c7366d86029dbc03ba5e8bd249054c",
+    "declared_text_edits_only": true,
+    "unchanged_top_level_function_ASTs": []
+  },
+  "generate_m9_sweep_figure.py": {
+    "original_sha256": "3ea1beb456dc7a8abb915c7b12ba7a957beb36ac094f84114e4c803151b23748",
+    "draft_sha256": "ede7b9bbe9ce29fb79f0189cc8c0efd55948f9999fdfaf66b2a7d32f33540e1f",
+    "declared_text_edits_only": true,
+    "unchanged_top_level_function_ASTs": []
+  }
+}

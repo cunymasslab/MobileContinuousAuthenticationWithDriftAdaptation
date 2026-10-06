@@ -1,0 +1,38 @@
+==============================================================================
+FULL-COHORT M7–M8 STATISTICAL CLOSURE REPORT
+==============================================================================
+
+Candidate file: <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/canonical_candidate_20260901/results_stage4_merged_summary_m7_repaired_20260901.csv
+Candidate SHA-256: 7217062926f755dbbb4259b20b49680a96d4647f1e3651861d52659f9cc3d098
+
+Coverage:
+  Candidate rows: 9,558
+  Successful configurations: 9,216
+  Target users: 89
+
+Configuration-weighted descriptive result:
+  M6 mean EER: 0.295290975942222
+  M7 mean EER: 0.091077444224612
+  M8 mean EER: 0.090555261217717
+  M7-minus-M8: +0.000522183006895
+  User-cluster bootstrap 95% CI: [+0.000393329350525, +0.000651326786251]
+
+Primary inferential unit:
+  One pair-frequency-weighted mean difference per user.
+  Users: 89
+  Mean M7-minus-M8: +0.000514093992147
+  EER percentage points: +0.051409399
+  Bootstrap 95% CI: [+0.000387273360548, +0.000641868876683]
+  t-based 95% CI: [+0.000384269765582, +0.000643918218713]
+  Paired t: t=+7.869515630, p=8.55230410276e-12
+  Wilcoxon: W=450.000000000, p=2.12857638841e-10
+  Monte Carlo sign-flip p: 4.99997500012e-06
+  Cohen's dz: +0.834166988
+
+Interpretation:
+  BPTT has a statistically detectable lower mean EER than RTRL at the user level, but the absolute effect is only 0.051409 EER percentage points. This is not a formal equivalence test.
+
+Important limitation:
+  No prospective equivalence or noninferiority margin was specified. Failure to find a difference must not be described as proof of equivalence.
+
+See accompanying CSV files for the category-equal sensitivity analysis and category-specific results.

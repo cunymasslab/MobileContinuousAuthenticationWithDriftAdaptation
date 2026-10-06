@@ -1,0 +1,18 @@
+[
+  {
+    "png": "forgetting_histogram_m2.png",
+    "bbox_inches": null,
+    "titles": [
+      {
+        "text": "Distribution of Adaptation Effect (Main Factorial, M2 vs M1)",
+        "normalized_bbox": [
+          0.233923611111111,
+          0.934,
+          0.846736111111111,
+          0.97
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  }
+]

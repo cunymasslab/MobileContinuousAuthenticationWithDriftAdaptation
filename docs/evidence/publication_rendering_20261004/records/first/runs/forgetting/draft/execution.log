@@ -1,0 +1,16 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_forgetting_histogram.py", "inputs/results_stage4_merged_summary_m7_repaired_20260901.csv"]
+Started UTC: 2026-10-04T22:15:38.152144+00:00
+
+data rows: 9558
+
+Valid (M1_end_eer & M2_end_eer both present): 9,216 of 9,558
+  delta < 0  (adaptation helped)               : 7,293  ( 79.1%)
+  median delta                                  : -0.1458
+  delta > 0.05 (forgetting threshold)        : 99  (  1.1%)
+
+Wrote figures:
+  figures/forgetting_histogram_m2.png
+  figures/forgetting_histogram_m2.pdf
+Numerical plotting trace saved for 1 PNG outputs.
+
+Exit status: 0

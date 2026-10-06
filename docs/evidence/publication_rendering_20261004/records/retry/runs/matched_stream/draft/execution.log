@@ -1,0 +1,36 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_confound_figures.py"]
+Started UTC: 2026-10-04T22:29:31.972761+00:00
+
+Loaded 9396 rows from results_confound/results_confound_summary.csv
+Output dir : results_confound/figures/
+Bootstrap  : 10000 resamples (user-level)
+
+  [paired_bar_v2] computing per-category bootstrap CIs...
+  [benefit_diff_vs_mmd_v2] seed-averaging and plotting...
+  [benefit_diff_vs_ks_v2] seed-averaging and plotting...
+  [drift_magnitude_by_category] building box plots...
+<COMPUTE_B_HOME>/tifs_publication_check_l3es4kvw/runs/matched_stream/draft/capture_plot_data.py:63: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  result = function(ax, *args, **kwargs)
+<COMPUTE_B_HOME>/tifs_publication_check_l3es4kvw/runs/matched_stream/draft/capture_plot_data.py:63: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  result = function(ax, *args, **kwargs)
+<COMPUTE_B_HOME>/tifs_publication_check_l3es4kvw/runs/matched_stream/draft/capture_plot_data.py:63: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  result = function(ax, *args, **kwargs)
+  [per_category_eer_comparison] computing per-category bootstrap CIs...
+  [forgetting_distribution] building histogram...
+
+Done. Figures (PNG + PDF):
+  results_confound/figures/benefit_diff_vs_ks_v2.pdf
+  results_confound/figures/benefit_diff_vs_ks_v2.png
+  results_confound/figures/benefit_diff_vs_mmd_v2.pdf
+  results_confound/figures/benefit_diff_vs_mmd_v2.png
+  results_confound/figures/drift_magnitude_by_category.pdf
+  results_confound/figures/drift_magnitude_by_category.png
+  results_confound/figures/forgetting_distribution.pdf
+  results_confound/figures/forgetting_distribution.png
+  results_confound/figures/paired_bar_v2.pdf
+  results_confound/figures/paired_bar_v2.png
+  results_confound/figures/per_category_eer_comparison.pdf
+  results_confound/figures/per_category_eer_comparison.png
+Numerical plotting trace saved for 6 PNG outputs.
+
+Exit status: 0

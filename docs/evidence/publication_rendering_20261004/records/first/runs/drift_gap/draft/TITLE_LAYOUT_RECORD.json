@@ -1,0 +1,18 @@
+[
+  {
+    "png": "drift_gap_distribution.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Distribution of Drift Gaps Across User-Condition Combinations",
+        "normalized_bbox": [
+          0.20275173611111108,
+          0.934,
+          0.8449392361111112,
+          0.97
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  }
+]

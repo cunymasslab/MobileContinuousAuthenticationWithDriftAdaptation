@@ -1,0 +1,42 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_confound_figures.py"]
+Started UTC: 2026-10-04T22:15:39.449393+00:00
+
+Loaded 9396 rows from results_confound/results_confound_summary.csv
+Output dir : results_confound/figures/
+Bootstrap  : 10000 resamples (user-level)
+
+  [paired_bar_v2] computing per-category bootstrap CIs...
+  [benefit_diff_vs_mmd_v2] seed-averaging and plotting...
+  [benefit_diff_vs_ks_v2] seed-averaging and plotting...
+  [drift_magnitude_by_category] building box plots...
+Traceback (most recent call last):
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/matched_stream/original/capture_plot_data.py", line 139, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/matched_stream/original/capture_plot_data.py", line 125, in main
+    runpy.run_path(str(target), run_name='__main__')
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen runpy>", line 287, in run_path
+  File "<frozen runpy>", line 98, in _run_module_code
+  File "<frozen runpy>", line 88, in _run_code
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/matched_stream/original/generate_confound_figures.py", line 338, in <module>
+    main()
+    ~~~~^^
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/matched_stream/original/generate_confound_figures.py", line 326, in main
+    fig4_drift_by_category(df)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/matched_stream/original/generate_confound_figures.py", line 238, in fig4_drift_by_category
+    bp = ax.boxplot(data, labels=CATEGORIES, patch_artist=True,
+                    widths=0.6, showfliers=False)
+  File "<COMPUTE_B_HOME>/tifs_publication_check_kvl6w6of/runs/matched_stream/original/capture_plot_data.py", line 60, in wrapped
+    bound = sig.bind_partial(ax, *args, **kwargs)
+  File "<COMPUTE_B_HOME>/miniconda/lib/python3.13/inspect.py", line 3271, in bind_partial
+    return self._bind(args, kwargs, partial=True)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<COMPUTE_B_HOME>/miniconda/lib/python3.13/inspect.py", line 3253, in _bind
+    raise TypeError(
+        'got an unexpected keyword argument {arg!r}'.format(
+            arg=next(iter(kwargs))))
+TypeError: got an unexpected keyword argument 'labels'
+
+Exit status: 1

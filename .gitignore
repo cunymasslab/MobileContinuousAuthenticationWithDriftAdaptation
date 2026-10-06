@@ -1,0 +1,16 @@
+venv/
+venv312/
+.env
+__pycache__/
+*.pyc
+.DS_Store
+results.csv
+
+*.csv
+hmog_dataset.zip
+data.csv
+features.csv
+public_dataset/
+touchalytics_data/
+
+/figures/

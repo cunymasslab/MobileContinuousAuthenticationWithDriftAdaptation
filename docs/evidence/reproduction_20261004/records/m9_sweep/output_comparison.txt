@@ -1,0 +1,6 @@
+===== M9 OUTPUT COMPARISON =====
+Reference SHA-256: ba18ffaeb95ff02927dc039653c5edd78261e60851ebadd61e9a6316ab07dfd8
+Generated SHA-256: ba18ffaeb95ff02927dc039653c5edd78261e60851ebadd61e9a6316ab07dfd8
+Byte-for-byte identical: True
+No rounding, normalization, or numerical tolerance was applied.
+PASS: The M9 configuration-weighted comparison matches exactly.

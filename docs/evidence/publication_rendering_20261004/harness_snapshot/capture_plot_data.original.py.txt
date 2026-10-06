@@ -1,0 +1,139 @@
+"""Execute one renderer and record its numerical plotting payload, without RNG calls.
+
+Used identically for original and draft rendering scripts. This is instrumentation,
+not a scientific analysis or a substitute for comparing to historical plot data.
+Do not execute against a directory containing preserved results.
+"""
+from pathlib import Path
+import functools
+import inspect
+import json
+import os
+import runpy
+import sys
+import weakref
+
+
+def main() -> int:
+    if len(sys.argv) < 2:
+        raise SystemExit('Usage: capture_plot_data.py RENDERER.py [renderer arguments]')
+    target = Path(sys.argv[1]).resolve()
+    target_args = sys.argv[2:]
+    output = Path('NUMERICAL_PLOT_TRACE.json')
+    layout_output = Path('TITLE_LAYOUT_RECORD.json')
+    if output.exists() or layout_output.exists():
+        raise SystemExit('STOP: Trace output already exists.')
+    import numpy as np
+    import matplotlib
+    matplotlib.use('Agg')
+    from matplotlib.axes import Axes
+    from matplotlib.figure import Figure
+
+    events = weakref.WeakKeyDictionary()
+    saved = []
+    layout = []
+    depth = 0
+
+    def numeric(value):
+        if value is None:
+            return None
+        array = np.ma.asarray(value)
+        raw = np.asarray(array.filled(np.nan) if np.ma.is_masked(array) else array,
+                         dtype=np.float64)
+        # Explicit representations for non-finite values; retain exact finite floats.
+        values = [float(v) if np.isfinite(v) else
+                  ('NaN' if np.isnan(v) else ('+Inf' if v > 0 else '-Inf'))
+                  for v in raw.reshape(-1)]
+        return {'shape': list(raw.shape), 'float64_values': values}
+
+    methods = ('hist', 'boxplot', 'bar', 'scatter', 'plot', 'axhline', 'axvline')
+    for method in methods:
+        original = getattr(Axes, method)
+        signature = inspect.signature(original)
+
+        def make_wrapper(name, function, sig):
+            @functools.wraps(function)
+            def wrapped(ax, *args, **kwargs):
+                nonlocal depth
+                if depth:
+                    return function(ax, *args, **kwargs)
+                bound = sig.bind_partial(ax, *args, **kwargs)
+                bound.apply_defaults()
+                depth += 1
+                try:
+                    result = function(ax, *args, **kwargs)
+                finally:
+                    depth -= 1
+                record = {'axes': ax.figure.axes.index(ax), 'operation': name}
+                if name == 'hist':
+                    record['counts'] = numeric(result[0])
+                    record['bin_edges'] = numeric(result[1])
+                elif name == 'boxplot':
+                    record['geometry'] = {
+                        key: [numeric(line.get_xydata()) for line in result[key]]
+                        for key in ('whiskers', 'caps', 'medians', 'fliers', 'means')
+                    }
+                    record['box_vertices'] = [
+                        numeric(box.get_path().vertices) for box in result['boxes']
+                    ]
+                elif name == 'bar':
+                    record['rectangles'] = numeric([
+                        [p.get_x(), p.get_y(), p.get_width(), p.get_height()]
+                        for p in result.patches
+                    ])
+                    # yerr carries the full-precision bootstrap interval widths.
+                    record['xerr'] = numeric(kwargs.get('xerr'))
+                    record['yerr'] = numeric(kwargs.get('yerr'))
+                elif name == 'scatter':
+                    record['point_offsets'] = numeric(result.get_offsets())
+                elif name == 'plot':
+                    record['line_coordinates'] = [numeric(line.get_xydata()) for line in result]
+                elif name in ('axhline', 'axvline'):
+                    record['line_coordinates'] = numeric(result.get_xydata())
+                events.setdefault(ax.figure, []).append(record)
+                return result
+            return wrapped
+        setattr(Axes, method, make_wrapper(method, original, signature))
+
+    original_save = Figure.savefig
+
+    @functools.wraps(original_save)
+    def save_with_trace(fig, filename, *args, **kwargs):
+        result = original_save(fig, filename, *args, **kwargs)
+        if isinstance(filename, (str, os.PathLike)) and Path(filename).suffix.lower() == '.png':
+            saved.append({'png': Path(filename).name, 'events': events.get(fig, [])})
+            # Layout observations do not enter numerical-payload comparisons.
+            fig.canvas.draw()
+            renderer = fig.canvas.get_renderer()
+            texts = [ax.title for ax in fig.axes]
+            if fig._suptitle is not None:
+                texts.append(fig._suptitle)
+            title_records = []
+            for text in texts:
+                if not text.get_visible() or not text.get_text():
+                    continue
+                box = text.get_window_extent(renderer).transformed(fig.transFigure.inverted())
+                title_records.append({'text': text.get_text(),
+                    'normalized_bbox': [float(v) for v in box.extents],
+                    'inside_nominal_canvas': bool(box.x0 >= 0 and box.y0 >= 0 and box.x1 <= 1 and box.y1 <= 1)})
+            layout.append({'png': Path(filename).name,
+                           'bbox_inches': kwargs.get('bbox_inches', matplotlib.rcParams['savefig.bbox']),
+                           'titles': title_records})
+        return result
+    Figure.savefig = save_with_trace
+    sys.argv = [str(target)] + target_args
+    runpy.run_path(str(target), run_name='__main__')
+    if not saved or any(not entry['events'] for entry in saved):
+        raise RuntimeError('No numerical plot events captured for an expected figure.')
+    with output.open('x', encoding='utf-8') as stream:
+        json.dump(saved, stream, indent=2, allow_nan=False)
+        stream.write('\n')
+    with layout_output.open('x', encoding='utf-8') as stream:
+        json.dump(layout, stream, indent=2, allow_nan=False)
+        stream.write('\n')
+    print('Numerical plotting trace saved for', len(saved), 'PNG outputs.')
+    return 0
+
+
+if __name__ == '__main__':
+    raise SystemExit(main())

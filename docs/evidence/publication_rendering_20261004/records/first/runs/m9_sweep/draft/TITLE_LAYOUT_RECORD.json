@@ -1,0 +1,18 @@
+[
+  {
+    "png": "m9_lr_sweep.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Persistent-State RTRL (M9) vs Per-Window M2 Across Learning Rates",
+        "normalized_bbox": [
+          0.18322048611111114,
+          0.934,
+          0.8918142361111112,
+          0.97
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  }
+]

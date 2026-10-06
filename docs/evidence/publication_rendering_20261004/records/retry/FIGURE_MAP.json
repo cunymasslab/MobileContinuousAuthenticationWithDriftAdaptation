@@ -1,0 +1,75 @@
+{
+  "source_commit": "5cda80ad8d53777e7c458b8bfba9589b1471c636",
+  "manuscript_archive": "AVINASH___HUI___RTRL_TIFS_PAPER.zip",
+  "manuscript_source_sha256": "9bf753636ae7674f99b705c0b7699fbf79aae14cb3502b990f6e0398e850e6ba",
+  "tasks": [
+    {
+      "id": "drift_detection",
+      "script": "source_snapshot/generate_drift_detection_figure.py",
+      "inputs": [
+        {
+          "bundle": "inputs/results_drift_detection.csv",
+          "staged": "inputs/results_drift_detection.csv"
+        }
+      ],
+      "arguments": [
+        "inputs/results_drift_detection.csv"
+      ],
+      "expected_outputs": [
+        "figures/drift_detection_boxplots.png",
+        "figures/drift_detection_boxplots.pdf"
+      ]
+    },
+    {
+      "id": "matched_stream",
+      "script": "source_snapshot/generate_confound_figures.py",
+      "inputs": [
+        {
+          "bundle": "inputs/results_confound_summary.csv",
+          "staged": "results_confound/results_confound_summary.csv"
+        }
+      ],
+      "arguments": [],
+      "expected_outputs": [
+        "results_confound/figures/paired_bar_v2.png",
+        "results_confound/figures/paired_bar_v2.pdf",
+        "results_confound/figures/benefit_diff_vs_mmd_v2.png",
+        "results_confound/figures/benefit_diff_vs_mmd_v2.pdf",
+        "results_confound/figures/benefit_diff_vs_ks_v2.png",
+        "results_confound/figures/benefit_diff_vs_ks_v2.pdf",
+        "results_confound/figures/drift_magnitude_by_category.png",
+        "results_confound/figures/drift_magnitude_by_category.pdf",
+        "results_confound/figures/per_category_eer_comparison.png",
+        "results_confound/figures/per_category_eer_comparison.pdf",
+        "results_confound/figures/forgetting_distribution.png",
+        "results_confound/figures/forgetting_distribution.pdf"
+      ]
+    }
+  ],
+  "manuscript_images": [
+    {
+      "label": "fig:drift_detection",
+      "task": "drift_detection",
+      "generated": "figures/drift_detection_boxplots.png",
+      "reference": "manuscript_reference/drift_detection_boxplots.png"
+    },
+    {
+      "label": "fig:paired_bar",
+      "task": "matched_stream",
+      "generated": "results_confound/figures/paired_bar_v2.png",
+      "reference": "manuscript_reference/paired_bar_v2.png"
+    },
+    {
+      "label": "fig:dose_mmd",
+      "task": "matched_stream",
+      "generated": "results_confound/figures/benefit_diff_vs_mmd_v2.png",
+      "reference": "manuscript_reference/benefit_diff_vs_mmd_v2.png"
+    },
+    {
+      "label": "fig:dose_ks",
+      "task": "matched_stream",
+      "generated": "results_confound/figures/benefit_diff_vs_ks_v2.png",
+      "reference": "manuscript_reference/benefit_diff_vs_ks_v2.png"
+    }
+  ]
+}

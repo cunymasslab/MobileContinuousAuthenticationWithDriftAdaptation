@@ -1,0 +1,45 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_drift_detection_figure.py", "inputs/results_drift_detection.csv"]
+Started UTC: 2026-10-04T22:28:53.228289+00:00
+
+data rows: 50
+columns (10):
+  - target_user
+  - train_condition
+  - stream_condition
+  - n_train_windows
+  - n_session4_windows
+  - n_significant_ks
+  - mean_ks_stat
+  - max_ks_stat
+  - classifier_accuracy
+  - drift_gap
+
+Per-category counts:
+  temporal         n= 10
+  cross-posture    n=  0  (expected absent from this subset)
+  cross-activity   n= 20
+  cross-both       n= 20
+
+Per-category medians:
+  temporal          mean_ks=0.259  clf_acc=0.912  n_sig_ks=10.0
+  cross-activity    mean_ks=0.396  clf_acc=0.991  n_sig_ks=11.0
+  cross-both        mean_ks=0.567  clf_acc=0.999  n_sig_ks=12.0
+
+Overall summary:
+  mean_ks_stat range            : [0.210, 0.774]
+    (draft claims 0.21 to 0.77)
+  classifier_accuracy > 0.95    :  74.0% of rows
+    (draft claims "exceeds 0.95 for most users")
+
+<COMPUTE_B_HOME>/tifs_publication_check_l3es4kvw/runs/drift_detection/original/capture_plot_data.py:63: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  result = function(ax, *args, **kwargs)
+<COMPUTE_B_HOME>/tifs_publication_check_l3es4kvw/runs/drift_detection/original/capture_plot_data.py:63: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  result = function(ax, *args, **kwargs)
+<COMPUTE_B_HOME>/tifs_publication_check_l3es4kvw/runs/drift_detection/original/capture_plot_data.py:63: MatplotlibDeprecationWarning: The 'labels' parameter of boxplot() has been renamed 'tick_labels' since Matplotlib 3.9; support for the old name will be dropped in 3.11.
+  result = function(ax, *args, **kwargs)
+Wrote figures:
+  figures/drift_detection_boxplots.png
+  figures/drift_detection_boxplots.pdf
+Numerical plotting trace saved for 1 PNG outputs.
+
+Exit status: 0

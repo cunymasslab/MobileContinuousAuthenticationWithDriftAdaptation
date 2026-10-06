@@ -1,0 +1,351 @@
+{
+  "archives": {
+    "first": {
+      "filename": "publication_first_run.zip",
+      "sha256": "7980ae4f06eb960768313adb479fc5e906e7caa14562d6255e0ed46754463f96",
+      "entries": 73,
+      "manifest_verified": 72
+    },
+    "retry": {
+      "filename": "publication_targeted_retry.zip",
+      "sha256": "8ffa754d8764b463c155945abdb78fb64bb0c726bf74cd5e875e88b386c51a9d",
+      "entries": 58,
+      "manifest_verified": 57
+    }
+  },
+  "tasks": {
+    "drift_detection": {
+      "archive": "retry",
+      "two_exit_statuses": [
+        0,
+        0
+      ],
+      "changed_files": 0,
+      "missing_outputs": 0,
+      "trace_byte_identical": true,
+      "trace_sha256": "f415a0a468b063cd0b11b69d37383f9ab2958e694428be3cbf2a2a2af3b0f754",
+      "captured_png_count": 1,
+      "captured_operations": {
+        "boxplot": 3
+      }
+    },
+    "drift_gap": {
+      "archive": "first",
+      "two_exit_statuses": [
+        0,
+        0
+      ],
+      "changed_files": 0,
+      "missing_outputs": 0,
+      "trace_byte_identical": true,
+      "trace_sha256": "9a3f6e62b81385c1df5456d2b6fadf93706155c9b0b266e2026b9c35a23109eb",
+      "captured_png_count": 1,
+      "captured_operations": {
+        "hist": 1,
+        "axvline": 1
+      }
+    },
+    "forgetting": {
+      "archive": "first",
+      "two_exit_statuses": [
+        0,
+        0
+      ],
+      "changed_files": 0,
+      "missing_outputs": 0,
+      "trace_byte_identical": true,
+      "trace_sha256": "dd046b70982b4e97539c6aca2835e571cdbd43a92f366f454a252bb943f853c2",
+      "captured_png_count": 1,
+      "captured_operations": {
+        "hist": 1,
+        "axvline": 2
+      }
+    },
+    "matched_stream": {
+      "archive": "retry",
+      "two_exit_statuses": [
+        0,
+        0
+      ],
+      "changed_files": 0,
+      "missing_outputs": 0,
+      "trace_byte_identical": true,
+      "trace_sha256": "fcb57831c5bbcb1e99dba16a63577876ca85a0968b55c01fe99f86f4bb299ef5",
+      "captured_png_count": 6,
+      "captured_operations": {
+        "bar": 4,
+        "axhline": 3,
+        "scatter": 8,
+        "plot": 2,
+        "boxplot": 3,
+        "hist": 1,
+        "axvline": 2
+      }
+    },
+    "m9_sweep": {
+      "archive": "first",
+      "two_exit_statuses": [
+        0,
+        0
+      ],
+      "changed_files": 0,
+      "missing_outputs": 0,
+      "trace_byte_identical": true,
+      "trace_sha256": "51c37f7622f8d9c76a3f0f0a59a747f5e47a02b8242790a7b9b121d2db946b8a",
+      "captured_png_count": 1,
+      "captured_operations": {
+        "bar": 1,
+        "axhline": 1
+      }
+    }
+  },
+  "images": [
+    {
+      "filename": "drift_detection_boxplots.png",
+      "task": "drift_detection",
+      "archive": "retry",
+      "reference_sha256": "ae8b86bc96a78d0afe3b8f32c42b763626a80bee7bd1ee8784a720bcd5a9c9ff",
+      "draft_sha256": "4818e514fd56a18bdaa33698fe167b716c52fd66098963f36a60050cf0dfc165",
+      "reference": {
+        "dimensions": [
+          1950,
+          774
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": null
+      },
+      "draft": {
+        "dimensions": [
+          3870,
+          1426
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Title is fully visible. Grayscale boxes, category order, labels and visible whisker/outlier patterns agree with the reference. Subplot height, top spacing, dimensions and text rasterization differ.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    },
+    {
+      "filename": "drift_gap_distribution.png",
+      "task": "drift_gap",
+      "archive": "first",
+      "reference_sha256": "3cda46468be33df874f46ed350a02f8053e292aba5578f8aeee719532402a015",
+      "draft_sha256": "de183e80021c61494764f10608f104088c3b0dcd1418ace5a98e7ffbf43c9eb2",
+      "reference": {
+        "dimensions": [
+          1200,
+          750
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": null
+      },
+      "draft": {
+        "dimensions": [
+          2370,
+          1466
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Same visible histogram pattern and median label 0.319. Draft uses a lighter gray, different margins and a larger pixel canvas.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    },
+    {
+      "filename": "forgetting_histogram_m2.png",
+      "task": "forgetting",
+      "archive": "first",
+      "reference_sha256": "78734197c6510af01f24a80284b0cce80e551679432a4e2d0a50e9da542356e0",
+      "draft_sha256": "17c2687dbc0906b4319a45f9af6cabcd189126682c89e6943b1130b4a7fa4dfd",
+      "reference": {
+        "dimensions": [
+          2172,
+          1395
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.8, https://matplotlib.org/"
+      },
+      "draft": {
+        "dimensions": [
+          2370,
+          1466
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Title, axis wording, threshold and histogram pattern are visually consistent. Plot height, whitespace, canvas size and gray tone differ. The obsolete ~9.4% console sentence is absent from the draft; the calculated 99/9216 result is unchanged.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    },
+    {
+      "filename": "paired_bar_v2.png",
+      "task": "matched_stream",
+      "archive": "retry",
+      "reference_sha256": "8736cc9a9ea034a4fcb00f0c736fe09253ca14182f6574af9d614bd85270922a",
+      "draft_sha256": "bdd0c7c8382bff0908785a412abcecd2b98aa0961d2dda002ae98f23d4179507",
+      "reference": {
+        "dimensions": [
+          2172,
+          1368
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.8, https://matplotlib.org/"
+      },
+      "draft": {
+        "dimensions": [
+          2355,
+          1460
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Control/Drift labels, hatched bars, category order and visible heights/error bars are consistent. Margins, plot proportions, text size and hatch scale differ. Exact historical bootstrap endpoints were not recovered from pixels.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    },
+    {
+      "filename": "benefit_diff_vs_mmd_v2.png",
+      "task": "matched_stream",
+      "archive": "retry",
+      "reference_sha256": "238b3067f43a89ddb3e98c0741d1a808a0295bcfedbe87f7d364e28a6d21e1c1",
+      "draft_sha256": "10cd23cf262f7f3065d131169c27f2317a650f63882340060b0e54ad6fa74706",
+      "reference": {
+        "dimensions": [
+          2171,
+          1484
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.8, https://matplotlib.org/"
+      },
+      "draft": {
+        "dimensions": [
+          2355,
+          1604
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Category marker types, visible point-cloud pattern, black fitted line and slope +0.429 / r +0.44 labels are consistent. Canvas, spacing, marker appearance and rasterization differ. Historical scatter coordinates were not reconstructed from pixels.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    },
+    {
+      "filename": "benefit_diff_vs_ks_v2.png",
+      "task": "matched_stream",
+      "archive": "retry",
+      "reference_sha256": "d164ad28b02b072b8f2ccdcf1ea3ca8c4e9da994964b5fc645a5a33e973e61cb",
+      "draft_sha256": "82dfe16ae3a7a908bb6e0e0a434d407ad0b68ceeba17427fb6774d6dacdb9e68",
+      "reference": {
+        "dimensions": [
+          2169,
+          1484
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.8, https://matplotlib.org/"
+      },
+      "draft": {
+        "dimensions": [
+          2352,
+          1604
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Category marker types, visible point-cloud pattern, black fitted line and slope +0.471 / r +0.37 labels are consistent. Canvas, spacing, marker appearance and rasterization differ. Historical scatter coordinates were not reconstructed from pixels.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    },
+    {
+      "filename": "m9_lr_sweep.png",
+      "task": "m9_sweep",
+      "archive": "first",
+      "reference_sha256": "8b101586f0198a608250cc459fd16e347384cd31c47607d76824c830e79618d2",
+      "draft_sha256": "e629cb10921b51fcb203def30f5bea3f8a94cbb0b224a5d5a5144142d10909de",
+      "reference": {
+        "dimensions": [
+          2172,
+          1395
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.8, https://matplotlib.org/"
+      },
+      "draft": {
+        "dimensions": [
+          2370,
+          1466
+        ],
+        "dpi": [
+          299.9994,
+          299.9994
+        ],
+        "software": "Matplotlib version3.10.3, https://matplotlib.org/"
+      },
+      "pixel_equal": false,
+      "visual_review": "Rate order, displayed bar values 0.321/0.258/0.210/0.160 and baseline label 0.151 agree visually. Margins, text proportions, gray tone and canvas size differ.",
+      "visual_reviewer": "Assistant inspection of supplied PNGs, 2026-10-04"
+    }
+  ],
+  "scope": {
+    "archive_identity": "Both uploaded ZIP hashes and all 72/57 output-manifest entries verified from uploaded bytes.",
+    "numerical_comparison": "Five successful original/draft trace pairs compared as bytes and parsed data; no tolerance applied. This is equality between implementations on the tested inputs, not recovery of historical plotted arrays.",
+    "strict_reference_image_comparison": "All seven remain unequal. Original reference bytes are retained unchanged. No test threshold has been relaxed.",
+    "visual_review": "Seven draft/reference PNG pairs inspected; fully visible titles, labels and visible data patterns are consistent at visual-review precision. Residual presentation differences are documented individually.",
+    "execution": "The research rendering executions took place on Compute B. This review read existing archives, source, JSON traces and images. It did not rerun research scripts, bootstraps, regressions or model training.",
+    "decision": "Accept the five scripts as tested reconstructed presentation variants for a separate additive import; do not claim pixel-identical historical reproduction or replace manuscript images.",
+    "not_established": [
+      "Exact historical scatter coordinates or bootstrap endpoints",
+      "Pixel-identical rendering",
+      "Historical rendering-source recovery",
+      "Reference-PDF comparison",
+      "Entire paper or full model-training reproduction",
+      "Successful fresh-checkout execution of the relocated entry points"
+    ]
+  },
+  "helper_correction": {
+    "failure": "First-run drift_detection and matched_stream aborted on labels= during redundant signature binding in the capture helper.",
+    "change": "Remove only unused bind_partial/apply_defaults checks; forward original arguments to Matplotlib. The target plotting scripts were not changed for the retry.",
+    "original_sha256": "793c18afe5532b6af5b73e924e6883aa0bbf223076d286f8793668e134dc2a04",
+    "fixed_sha256": "34e15d83021aea60ca9a3a9c12542145f757a606653ded3bac493d10301373a3",
+    "historical_failures_preserved": true
+  }
+}

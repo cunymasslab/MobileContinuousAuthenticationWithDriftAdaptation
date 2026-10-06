@@ -1,0 +1,17 @@
+Private collection of existing Mac reference files
+Collected UTC: 2026-10-04T19:48:50.008316+00:00
+Collection location: Workstation C
+
+The drift CSVs came from the local project's results_stage4b_exp1/.
+The two Touchalytics CSVs came from the local Downloads/data/ folder.
+Source/configuration snapshots came from the local project.
+All selected file contents were copied without modification.
+Source snapshots are not automatically established as producing versions.
+No research script, experiment, or statistical analysis was executed.
+No server was contacted and no Git operation was performed.
+Raw datasets, feature matrices, shell history, and environments are excluded.
+Touchalytics adaptation-result CSVs and sweep/run logs are not included.
+Historical file-identity comparisons remain separate from this collection.
+
+Supporting files not found:
+None

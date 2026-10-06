@@ -1,0 +1,48 @@
+M7 REPAIR CANONICAL-CANDIDATE PROVENANCE
+
+Created UTC:
+2026-09-01T19:42:03.214577+00:00
+
+Historical canonical input:
+<COMPUTE_B_HOME>/rtrl_from_scratch/stage4_backup_20260410/results_stage4_merged_summary_with_m7.csv
+SHA-256:
+202095220d25d41d20aed06a007318d7244458dfbdae6aadc5611c34e2c86c77
+
+Repair summary inputs:
+<COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk1_summary.csv
+SHA-256:
+20ff7897757d5cc6e924bd54ada9d06362440af4deba2bfb2856fd840bf388f1
+
+<COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk2_summary.csv
+SHA-256:
+f316248c88bcac0d3bc1f41aea9e78a407b956b4e41a0e9f2273aa5770b755fd
+
+Merge operation:
+Only the following M7 columns were replaced for the 1,728
+configuration keys represented in repair chunks 1 and 2:
+M7_overall_eer, M7_initial_eer, M7_end_eer, M7_recovery, M7_accuracy, M7_precision, M7_recall, M7_f1, M7_mcc, M7_auc_roc
+
+No historical file was overwritten.
+All non-M7 values remained unchanged.
+M7 values outside the repaired key set remained unchanged.
+
+Repair coverage:
+Rows represented by repair summaries: 1,728
+Successful repaired configurations: 1,656
+Historical failure stubs: 72
+Repaired target users: 16
+
+Candidate full-cohort coverage:
+Successful configurations: 9,216
+Target users: 89
+
+Candidate results:
+M6 mean EER: 0.295290975942222
+M7 mean EER: 0.091077444224612
+M8 mean EER: 0.090555261217717
+M7-minus-M8 mean EER: +0.000522183006895
+
+Candidate summary:
+<COMPUTE_B_HOME>/rtrl_m7_repair_20260825/canonical_candidate_20260901/results_stage4_merged_summary_m7_repaired_20260901.csv
+SHA-256:
+7217062926f755dbbb4259b20b49680a96d4647f1e3651861d52659f9cc3d098

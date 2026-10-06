@@ -1,0 +1,48 @@
+[
+  {
+    "png": "drift_detection_boxplots.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Mean KS Statistic",
+        "normalized_bbox": [
+          0.1324626068376069,
+          0.7525,
+          0.2435202991452992,
+          0.7899999999999999
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Max KS Statistic",
+        "normalized_bbox": [
+          0.4683760683760684,
+          0.7525,
+          0.5710683760683761,
+          0.7899999999999999
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Classifier Accuracy",
+        "normalized_bbox": [
+          0.791020299145299,
+          0.7525,
+          0.9118856837606836,
+          0.7899999999999999
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Feature-Distribution Separability by Drift Category (50 Selected Combinations)",
+        "normalized_bbox": [
+          0.24841346153846153,
+          0.9424999999999999,
+          0.7515865384615384,
+          0.98
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  }
+]

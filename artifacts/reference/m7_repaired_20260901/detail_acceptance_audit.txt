@@ -1,0 +1,124 @@
+==============================================================================
+M7 REPAIR PER-WINDOW DETAIL ACCEPTANCE AUDIT
+==============================================================================
+
+==============================================================================
+CHUNK 1 DETAIL AUDIT
+==============================================================================
+Historical detail: <COMPUTE_B_HOME>/rtrl_from_scratch/stage4_backup_20260410/results_stage4_chunk1_detail.csv
+Historical SHA-256: d70a62fc55712c737815d8607349b5dce906f2e512d12beeca9695ca3027e804
+Repair detail:     <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk1_detail.csv
+Repair SHA-256:    0012628b7e02f680485f3adf0a1c58246d04769a0c5e1ab856c026bb129cc677
+Repair summary:    <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk1_summary.csv
+Summary SHA-256:   20ff7897757d5cc6e924bd54ada9d06362440af4deba2bfb2856fd840bf388f1
+
+=== EXPECTED COVERAGE FROM REPAIR SUMMARY ===
+Successful configurations: 792
+Expected detail rows:      860,376
+Processed block   5: 500,000 detail rows
+
+=== ROW COVERAGE ===
+Historical detail rows: 860,376
+Repair detail rows:     860,376
+Expected from summary:  860,376
+Configurations seen:    792
+Expected configurations:792
+Missing successful configurations: 0
+Unexpected configurations:         0
+
+=== ROW-IDENTITY AND METADATA COMPARISON ===
+target_user              mismatches=       0
+train_condition          mismatches=       0
+stream_condition         mismatches=       0
+seed                     mismatches=       0
+window_index             mismatches=       0
+pair_category            mismatches=       0
+true_label               mismatches=       0
+
+=== M6/M8 PER-WINDOW CONTROL COMPARISON ===
+M6_score                 mismatches=       0 max_abs_diff=0
+M6_rolling_eer           mismatches=       0 max_abs_diff=0
+M6_cumulative_eer        mismatches=       0 max_abs_diff=0
+M8_score                 mismatches=       0 max_abs_diff=0
+M8_rolling_eer           mismatches=       0 max_abs_diff=0
+M8_cumulative_eer        mismatches=       0 max_abs_diff=0
+
+=== REPAIRED M7 SCORE VALIDITY ===
+Invalid true labels:     0
+Invalid M7 scores:       0
+Minimum M7 score:        3.04327948559748e-15
+Maximum M7 score:        0.99999999999999
+
+=== CHUNK VERDICT ===
+Row identities exact:    True
+M6/M8 controls exact:    True
+Coverage exact:          True
+M7 scores valid:         True
+
+==============================================================================
+CHUNK 2 DETAIL AUDIT
+==============================================================================
+Historical detail: <COMPUTE_B_HOME>/rtrl_from_scratch/stage4_backup_20260410/results_stage4_chunk2_detail.csv
+Historical SHA-256: 8c5eebcef5f7ad45525f57571152bf6736a590c471132f77dd4ff84b4125dcf4
+Repair detail:     <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk2_detail.csv
+Repair SHA-256:    dbe61edb9bfb1f61290a2b4f7617e5fb76fe69b5d04115ef3523db310db33e0e
+Repair summary:    <COMPUTE_B_HOME>/rtrl_m7_repair_20260825/results/repair_chunk2_summary.csv
+Summary SHA-256:   f316248c88bcac0d3bc1f41aea9e78a407b956b4e41a0e9f2273aa5770b755fd
+
+=== EXPECTED COVERAGE FROM REPAIR SUMMARY ===
+Successful configurations: 864
+Expected detail rows:      955,404
+Processed block   5: 500,000 detail rows
+Processed block  10: 955,404 detail rows
+
+=== ROW COVERAGE ===
+Historical detail rows: 955,404
+Repair detail rows:     955,404
+Expected from summary:  955,404
+Configurations seen:    864
+Expected configurations:864
+Missing successful configurations: 0
+Unexpected configurations:         0
+
+=== ROW-IDENTITY AND METADATA COMPARISON ===
+target_user              mismatches=       0
+train_condition          mismatches=       0
+stream_condition         mismatches=       0
+seed                     mismatches=       0
+window_index             mismatches=       0
+pair_category            mismatches=       0
+true_label               mismatches=       0
+
+=== M6/M8 PER-WINDOW CONTROL COMPARISON ===
+M6_score                 mismatches=       0 max_abs_diff=0
+M6_rolling_eer           mismatches=       0 max_abs_diff=0
+M6_cumulative_eer        mismatches=       0 max_abs_diff=0
+M8_score                 mismatches=       0 max_abs_diff=0
+M8_rolling_eer           mismatches=       0 max_abs_diff=0
+M8_cumulative_eer        mismatches=       0 max_abs_diff=0
+
+=== REPAIRED M7 SCORE VALIDITY ===
+Invalid true labels:     0
+Invalid M7 scores:       0
+Minimum M7 score:        6.58332992166145e-16
+Maximum M7 score:        1
+
+=== CHUNK VERDICT ===
+Row identities exact:    True
+M6/M8 controls exact:    True
+Coverage exact:          True
+M7 scores valid:         True
+
+==============================================================================
+FINAL DETAIL-LEVEL VERDICT
+==============================================================================
+Chunk 1: PASS
+Chunk 2: PASS
+
+PASS: Repair detail rows exactly reproduce the historical
+M6 and M8 predictions and EER trajectories, row identities
+and class labels match, configuration coverage reconciles
+with the repair summaries, and repaired M7 scores are valid.
+
+The repaired M7 results may now proceed to canonical merging
+and manuscript-statistic replacement.

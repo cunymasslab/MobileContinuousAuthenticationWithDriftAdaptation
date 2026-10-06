@@ -1,0 +1,14 @@
+Private Touchalytics adaptation-results collection
+Collected UTC: 2026-10-04T20:15:55.952133+00:00
+Collection location: Compute A
+
+Selected file contents copied without modification.
+No research scripts, analyses, or experiments were executed.
+Default, raw-event, and alternate-name outputs remain separate.
+Source snapshots are not automatically established as producing versions.
+Raw datasets, feature matrices, shell history, and environments are excluded.
+Previously collected drift/diagnostic CSVs are not included again.
+Logs and source snapshots require privacy inspection before distribution.
+
+Optional files not found:
+results_touchalytics/touchalytics_adaptation_raw_results.csv

@@ -1,0 +1,27 @@
+Command: ["<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python", "-I", "-B", "-u", "capture_plot_data.py", "generate_m9_sweep_figure.py", "inputs/m9_comparison.csv"]
+Started UTC: 2026-10-04T22:16:18.150792+00:00
+
+data rows: 5
+All rows in CSV:
+  model    lr_online    mean_eer  n_with_eer
+  M2          0.0020      0.1508         330
+  M9          0.0001      0.3208         330
+  M9          0.0005      0.2583         330
+  M9          0.0010      0.2098         330
+  M9          0.0020      0.1599         330
+
+Extracted values vs draft claims:
+  M2 baseline @ lr=0.002    : actual=0.1508   (draft claims 0.151)
+
+   lr_online     M9 actual    M9 draft
+      0.0001        0.3208       0.321
+      0.0005        0.2583       0.258
+      0.0010        0.2098       0.210
+      0.0020        0.1599       0.160
+
+Wrote figures:
+  figures/m9_lr_sweep.png
+  figures/m9_lr_sweep.pdf
+Numerical plotting trace saved for 1 PNG outputs.
+
+Exit status: 0

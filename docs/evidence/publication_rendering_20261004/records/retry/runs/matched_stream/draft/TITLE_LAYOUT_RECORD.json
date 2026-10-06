@@ -1,0 +1,128 @@
+[
+  {
+    "png": "paired_bar_v2.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Adaptation Benefit by Drift Category and Stream Type",
+        "normalized_bbox": [
+          0.23525173611111114,
+          0.931,
+          0.8447829861111111,
+          0.967
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  },
+  {
+    "png": "benefit_diff_vs_mmd_v2.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Adaptation Benefit Scales with Drift Magnitude (MMD)",
+        "normalized_bbox": [
+          0.23001736111111115,
+          0.9372727272727273,
+          0.8390798611111112,
+          0.97
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  },
+  {
+    "png": "benefit_diff_vs_ks_v2.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Adaptation Benefit Scales with Drift Magnitude (KS)",
+        "normalized_bbox": [
+          0.24041353298576298,
+          0.9372727272727273,
+          0.822288532985763,
+          0.97
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  },
+  {
+    "png": "drift_magnitude_by_category.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "MMD Statistic",
+        "normalized_bbox": [
+          0.142366452991453,
+          0.7462499999999999,
+          0.23746260683760687,
+          0.7837499999999998
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Mean KS Statistic",
+        "normalized_bbox": [
+          0.46097222222222234,
+          0.7462499999999999,
+          0.5815491452991454,
+          0.7837499999999998
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Classifier Accuracy",
+        "normalized_bbox": [
+          0.7869818376068376,
+          0.7462499999999999,
+          0.9182318376068376,
+          0.7837499999999998
+        ],
+        "inside_nominal_canvas": true
+      },
+      {
+        "text": "Drift Magnitude by Category \u2014 Three Independent Metrics",
+        "normalized_bbox": [
+          0.2929326923076923,
+          0.9424999999999999,
+          0.7070673076923077,
+          0.98
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  },
+  {
+    "png": "per_category_eer_comparison.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Frozen vs Adapter EER on the Drift Stream by Category",
+        "normalized_bbox": [
+          0.22861111111111115,
+          0.931,
+          0.8514236111111112,
+          0.967
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  },
+  {
+    "png": "forgetting_distribution.png",
+    "bbox_inches": "tight",
+    "titles": [
+      {
+        "text": "Distribution of (M4 \u2212 M1) Drift-Stream EER\n89.6% helped (<0), 0.4% above forgetting threshold (>+0.05)",
+        "normalized_bbox": [
+          0.19064236111111116,
+          0.8893999999999999,
+          0.8948611111111111,
+          0.9669999999999999
+        ],
+        "inside_nominal_canvas": true
+      }
+    ]
+  }
+]

@@ -1,0 +1,1054 @@
+from __future__ import annotations
+
+import hashlib
+import sys
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+from scipy.stats import t as student_t
+from scipy.stats import ttest_1samp, wilcoxon
+
+
+CANDIDATE_DIR = Path(
+    "<PRIVATE_HOME>/rtrl_m7_repair_20260825/"
+    "canonical_candidate_20260901"
+)
+
+CANDIDATE = (
+    CANDIDATE_DIR
+    / "results_stage4_merged_summary_m7_repaired_20260901.csv"
+)
+
+EXPECTED_SHA256 = (
+    "7217062926f755dbbb4259b20b49680a"
+    "96d4647f1e3651861d52659f9cc3d098"
+)
+
+OUTPUT_DIR = CANDIDATE_DIR / "m7_m8_statistical_closure"
+
+REPORT = OUTPUT_DIR / "m7_m8_statistical_closure.txt"
+OVERALL_CSV = OUTPUT_DIR / "m7_m8_overall_statistics.csv"
+CATEGORY_CSV = OUTPUT_DIR / "m7_m8_by_category.csv"
+USER_CSV = OUTPUT_DIR / "m7_m8_user_level_values.csv"
+USER_CATEGORY_CSV = (
+    OUTPUT_DIR / "m7_m8_user_category_values.csv"
+)
+MANIFEST = OUTPUT_DIR / "MANIFEST.sha256"
+
+KEYS = [
+    "target_user",
+    "train_condition",
+    "stream_condition",
+    "seed",
+]
+
+METRICS = [
+    "M6_overall_eer",
+    "M7_overall_eer",
+    "M8_overall_eer",
+]
+
+CATEGORIES = [
+    "temporal",
+    "cross-posture",
+    "cross-activity",
+    "cross-both",
+]
+
+TOL = 1e-12
+N_BOOT = 100_000
+N_SIGN_FLIPS = 200_000
+BOOT_BATCH = 5_000
+SIGN_BATCH = 5_000
+
+
+def fail(message: str) -> None:
+    print(f"\nFAIL: {message}")
+    sys.exit(1)
+
+
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+
+    with path.open("rb") as handle:
+        for block in iter(
+            lambda: handle.read(1024 * 1024),
+            b"",
+        ):
+            digest.update(block)
+
+    return digest.hexdigest()
+
+
+def bootstrap_mean_ci(
+    values: np.ndarray,
+    seed: int,
+    n_boot: int = N_BOOT,
+) -> tuple[float, float]:
+    values = np.asarray(values, dtype=float)
+    values = values[np.isfinite(values)]
+
+    if len(values) < 2:
+        return np.nan, np.nan
+
+    rng = np.random.default_rng(seed)
+    boot_means = np.empty(n_boot, dtype=float)
+    n = len(values)
+
+    for start in range(0, n_boot, BOOT_BATCH):
+        stop = min(start + BOOT_BATCH, n_boot)
+        batch_size = stop - start
+
+        indices = rng.integers(
+            0,
+            n,
+            size=(batch_size, n),
+        )
+
+        boot_means[start:stop] = (
+            values[indices].mean(axis=1)
+        )
+
+    return (
+        float(np.quantile(boot_means, 0.025)),
+        float(np.quantile(boot_means, 0.975)),
+    )
+
+
+def cluster_weighted_bootstrap_ci(
+    cluster_sums: np.ndarray,
+    cluster_counts: np.ndarray,
+    seed: int,
+    n_boot: int = N_BOOT,
+) -> tuple[float, float]:
+    cluster_sums = np.asarray(cluster_sums, dtype=float)
+    cluster_counts = np.asarray(cluster_counts, dtype=float)
+
+    if (
+        len(cluster_sums) < 2
+        or len(cluster_sums) != len(cluster_counts)
+    ):
+        return np.nan, np.nan
+
+    rng = np.random.default_rng(seed)
+    n_clusters = len(cluster_sums)
+    boot_means = np.empty(n_boot, dtype=float)
+
+    for start in range(0, n_boot, BOOT_BATCH):
+        stop = min(start + BOOT_BATCH, n_boot)
+        batch_size = stop - start
+
+        indices = rng.integers(
+            0,
+            n_clusters,
+            size=(batch_size, n_clusters),
+        )
+
+        sampled_sums = cluster_sums[indices].sum(axis=1)
+        sampled_counts = cluster_counts[indices].sum(axis=1)
+
+        boot_means[start:stop] = (
+            sampled_sums / sampled_counts
+        )
+
+    return (
+        float(np.quantile(boot_means, 0.025)),
+        float(np.quantile(boot_means, 0.975)),
+    )
+
+
+def sign_flip_pvalue(
+    differences: np.ndarray,
+    seed: int,
+    n_resamples: int = N_SIGN_FLIPS,
+) -> float:
+    differences = np.asarray(differences, dtype=float)
+    differences = differences[np.isfinite(differences)]
+
+    if len(differences) == 0:
+        return np.nan
+
+    observed = abs(float(differences.mean()))
+    rng = np.random.default_rng(seed)
+
+    extreme = 0
+    completed = 0
+    n = len(differences)
+
+    while completed < n_resamples:
+        batch_size = min(
+            SIGN_BATCH,
+            n_resamples - completed,
+        )
+
+        signs = rng.choice(
+            np.array([-1.0, 1.0]),
+            size=(batch_size, n),
+        )
+
+        permuted = np.abs(
+            (signs * differences).mean(axis=1)
+        )
+
+        extreme += int(
+            np.sum(permuted >= observed - 1e-15)
+        )
+
+        completed += batch_size
+
+    # Add-one correction for a Monte Carlo randomization test.
+    return float(
+        (extreme + 1)
+        / (n_resamples + 1)
+    )
+
+
+def holm_adjust(pvalues: list[float]) -> list[float]:
+    values = np.asarray(pvalues, dtype=float)
+    adjusted = np.full(len(values), np.nan)
+
+    valid = np.flatnonzero(np.isfinite(values))
+
+    if len(valid) == 0:
+        return adjusted.tolist()
+
+    order = valid[np.argsort(values[valid])]
+    running = 0.0
+    m = len(order)
+
+    for rank, index in enumerate(order):
+        candidate = values[index] * (m - rank)
+        running = max(running, candidate)
+        adjusted[index] = min(running, 1.0)
+
+    return adjusted.tolist()
+
+
+def summarize_user_view(
+    frame: pd.DataFrame,
+    view_name: str,
+    seed: int,
+) -> dict:
+    required = [
+        "M6_overall_eer",
+        "M7_overall_eer",
+        "M8_overall_eer",
+    ]
+
+    missing = [
+        column
+        for column in required
+        if column not in frame.columns
+    ]
+
+    if missing:
+        fail(
+            f"{view_name} is missing columns: {missing}"
+        )
+
+    m6 = frame["M6_overall_eer"].to_numpy(
+        dtype=float
+    )
+    m7 = frame["M7_overall_eer"].to_numpy(
+        dtype=float
+    )
+    m8 = frame["M8_overall_eer"].to_numpy(
+        dtype=float
+    )
+
+    differences = m7 - m8
+    rtrl_benefit = m6 - m7
+    bptt_benefit = m6 - m8
+
+    n = len(differences)
+
+    if n < 2:
+        fail(
+            f"{view_name} has fewer than two users"
+        )
+
+    mean_difference = float(differences.mean())
+    median_difference = float(
+        np.median(differences)
+    )
+    sd_difference = float(
+        differences.std(ddof=1)
+    )
+    se_difference = (
+        sd_difference / np.sqrt(n)
+    )
+
+    critical = student_t.ppf(
+        0.975,
+        df=n - 1,
+    )
+
+    t_ci_low = float(
+        mean_difference - critical * se_difference
+    )
+    t_ci_high = float(
+        mean_difference + critical * se_difference
+    )
+
+    boot_low, boot_high = bootstrap_mean_ci(
+        differences,
+        seed=seed,
+    )
+
+    t_result = ttest_1samp(
+        differences,
+        popmean=0.0,
+        nan_policy="raise",
+    )
+
+    try:
+        wilcoxon_result = wilcoxon(
+            differences,
+            zero_method="wilcox",
+            correction=False,
+            alternative="two-sided",
+            mode="auto",
+        )
+
+        wilcoxon_statistic = float(
+            wilcoxon_result.statistic
+        )
+        wilcoxon_p = float(
+            wilcoxon_result.pvalue
+        )
+
+    except ValueError:
+        wilcoxon_statistic = np.nan
+        wilcoxon_p = np.nan
+
+    randomization_p = sign_flip_pvalue(
+        differences,
+        seed=seed + 1000,
+    )
+
+    if sd_difference > 0:
+        cohens_dz = (
+            mean_difference / sd_difference
+        )
+    else:
+        cohens_dz = np.nan
+
+    m7_lower = int(
+        np.sum(differences < -TOL)
+    )
+    m8_lower = int(
+        np.sum(differences > TOL)
+    )
+    ties = int(
+        np.sum(np.abs(differences) <= TOL)
+    )
+
+    rtrl_ci_low, rtrl_ci_high = bootstrap_mean_ci(
+        rtrl_benefit,
+        seed=seed + 2000,
+    )
+
+    bptt_ci_low, bptt_ci_high = bootstrap_mean_ci(
+        bptt_benefit,
+        seed=seed + 3000,
+    )
+
+    return {
+        "view": view_name,
+        "n_users": n,
+        "M6_mean_eer": float(m6.mean()),
+        "M7_mean_eer": float(m7.mean()),
+        "M8_mean_eer": float(m8.mean()),
+        "mean_M7_minus_M8": mean_difference,
+        "mean_difference_percentage_points": (
+            100.0 * mean_difference
+        ),
+        "median_M7_minus_M8": median_difference,
+        "sd_M7_minus_M8": sd_difference,
+        "se_M7_minus_M8": se_difference,
+        "t_ci95_low": t_ci_low,
+        "t_ci95_high": t_ci_high,
+        "bootstrap_ci95_low": boot_low,
+        "bootstrap_ci95_high": boot_high,
+        "paired_t_statistic": float(
+            t_result.statistic
+        ),
+        "paired_t_pvalue": float(
+            t_result.pvalue
+        ),
+        "wilcoxon_statistic": wilcoxon_statistic,
+        "wilcoxon_pvalue": wilcoxon_p,
+        "sign_flip_pvalue": randomization_p,
+        "cohens_dz": float(cohens_dz),
+        "users_M7_lower": m7_lower,
+        "users_M8_lower": m8_lower,
+        "users_tied": ties,
+        "mean_RTRL_benefit_M6_minus_M7": float(
+            rtrl_benefit.mean()
+        ),
+        "RTRL_benefit_boot_ci95_low": rtrl_ci_low,
+        "RTRL_benefit_boot_ci95_high": rtrl_ci_high,
+        "mean_BPTT_benefit_M6_minus_M8": float(
+            bptt_benefit.mean()
+        ),
+        "BPTT_benefit_boot_ci95_low": bptt_ci_low,
+        "BPTT_benefit_boot_ci95_high": bptt_ci_high,
+    }
+
+
+if not CANDIDATE.is_file():
+    fail(f"Candidate file is missing: {CANDIDATE}")
+
+candidate_hash = sha256(CANDIDATE)
+
+if candidate_hash != EXPECTED_SHA256:
+    fail(
+        "Candidate SHA-256 differs from the accepted merge.\n"
+        f"Observed: {candidate_hash}\n"
+        f"Expected: {EXPECTED_SHA256}"
+    )
+
+if OUTPUT_DIR.exists():
+    fail(
+        f"Output directory already exists: {OUTPUT_DIR}\n"
+        "No files were changed. Inspect or rename it before rerunning."
+    )
+
+OUTPUT_DIR.mkdir(parents=True)
+
+
+df = pd.read_csv(
+    CANDIDATE,
+    dtype={
+        "target_user": "string",
+        "train_condition": "string",
+        "stream_condition": "string",
+        "pair_category": "string",
+    },
+    low_memory=False,
+)
+
+for column in [
+    "target_user",
+    "train_condition",
+    "stream_condition",
+    "pair_category",
+]:
+    df[column] = (
+        df[column]
+        .astype("string")
+        .str.strip()
+    )
+
+df["seed"] = pd.to_numeric(
+    df["seed"],
+    errors="raise",
+).astype(int)
+
+for column in METRICS:
+    if column not in df.columns:
+        fail(f"Candidate is missing {column}")
+
+    df[column] = pd.to_numeric(
+        df[column],
+        errors="coerce",
+    )
+
+
+print("=" * 78)
+print("FULL-COHORT M7–M8 USER-LEVEL STATISTICAL CLOSURE")
+print("=" * 78)
+
+print(f"Candidate:       {CANDIDATE}")
+print(f"Candidate SHA:   {candidate_hash}")
+print(f"Candidate rows:  {len(df):,}")
+print(f"Duplicate keys:  {df.duplicated(KEYS).sum()}")
+
+
+if len(df) != 9558:
+    fail(
+        f"Expected 9,558 candidate rows, "
+        f"found {len(df):,}"
+    )
+
+if df.duplicated(KEYS).any():
+    fail("Candidate contains duplicate configuration keys")
+
+
+metric_present = df[METRICS].notna()
+partial = (
+    metric_present.any(axis=1)
+    & ~metric_present.all(axis=1)
+)
+
+if partial.any():
+    fail(
+        f"Candidate contains {int(partial.sum())} "
+        "partial M6/M7/M8 rows"
+    )
+
+valid = metric_present.all(axis=1)
+full = df.loc[valid].copy()
+
+if len(full) != 9216:
+    fail(
+        f"Expected 9,216 valid configurations, "
+        f"found {len(full):,}"
+    )
+
+if full["target_user"].nunique() != 89:
+    fail(
+        "Expected 89 target users, found "
+        f"{full['target_user'].nunique()}"
+    )
+
+unexpected_categories = (
+    set(full["pair_category"].dropna().unique())
+    - set(CATEGORIES)
+)
+
+if unexpected_categories:
+    fail(
+        "Unexpected drift categories: "
+        f"{sorted(unexpected_categories)}"
+    )
+
+
+full["M7_minus_M8"] = (
+    full["M7_overall_eer"]
+    - full["M8_overall_eer"]
+)
+
+full["RTRL_benefit"] = (
+    full["M6_overall_eer"]
+    - full["M7_overall_eer"]
+)
+
+full["BPTT_benefit"] = (
+    full["M6_overall_eer"]
+    - full["M8_overall_eer"]
+)
+
+
+print()
+print("=== CONFIGURATION-WEIGHTED DESCRIPTIVE VIEW ===")
+
+configuration_difference = full["M7_minus_M8"]
+
+print(f"Configurations:          {len(full):,}")
+print(f"Users:                  {full['target_user'].nunique()}")
+print(
+    f"M6 mean EER:            "
+    f"{full['M6_overall_eer'].mean():.12f}"
+)
+print(
+    f"M7 mean EER:            "
+    f"{full['M7_overall_eer'].mean():.12f}"
+)
+print(
+    f"M8 mean EER:            "
+    f"{full['M8_overall_eer'].mean():.12f}"
+)
+print(
+    f"Mean M7-minus-M8:       "
+    f"{configuration_difference.mean():+.12f}"
+)
+print(
+    f"Difference in EER pp:   "
+    f"{100 * configuration_difference.mean():+.6f}"
+)
+
+
+cluster_table = (
+    full.groupby("target_user")["M7_minus_M8"]
+    .agg(["sum", "count"])
+    .reset_index()
+)
+
+cluster_ci_low, cluster_ci_high = (
+    cluster_weighted_bootstrap_ci(
+        cluster_table["sum"].to_numpy(dtype=float),
+        cluster_table["count"].to_numpy(dtype=float),
+        seed=42,
+    )
+)
+
+print(
+    "User-cluster bootstrap "
+    f"95% CI: [{cluster_ci_low:+.12f}, "
+    f"{cluster_ci_high:+.12f}]"
+)
+
+
+# ------------------------------------------------------------------
+# Pair-weighted, equal-user view:
+# each user contributes the mean of all valid configurations.
+# This preserves the 6/6/12/12 pair-frequency structure within user.
+# ------------------------------------------------------------------
+
+user_pair_weighted = (
+    full.groupby("target_user", as_index=False)
+    .agg(
+        n_configurations=("seed", "size"),
+        n_categories=("pair_category", "nunique"),
+        M6_overall_eer=("M6_overall_eer", "mean"),
+        M7_overall_eer=("M7_overall_eer", "mean"),
+        M8_overall_eer=("M8_overall_eer", "mean"),
+    )
+)
+
+user_pair_weighted["M7_minus_M8"] = (
+    user_pair_weighted["M7_overall_eer"]
+    - user_pair_weighted["M8_overall_eer"]
+)
+
+user_pair_weighted["RTRL_benefit"] = (
+    user_pair_weighted["M6_overall_eer"]
+    - user_pair_weighted["M7_overall_eer"]
+)
+
+user_pair_weighted["BPTT_benefit"] = (
+    user_pair_weighted["M6_overall_eer"]
+    - user_pair_weighted["M8_overall_eer"]
+)
+
+
+if len(user_pair_weighted) != 89:
+    fail(
+        "Pair-weighted table does not contain 89 users"
+    )
+
+if not (
+    user_pair_weighted["n_categories"] == 4
+).all():
+    print(
+        "\nUsers lacking at least one drift category "
+        "in the valid-result set:"
+    )
+    print(
+        user_pair_weighted.loc[
+            user_pair_weighted["n_categories"] != 4,
+            [
+                "target_user",
+                "n_configurations",
+                "n_categories",
+            ],
+        ].to_string(index=False)
+    )
+    fail(
+        "Pair-weighted user table lacks complete "
+        "category coverage"
+    )
+
+
+# ------------------------------------------------------------------
+# Category-equal, equal-user sensitivity view:
+# first average within user × category, then give each category
+# one-quarter weight within a user.
+# ------------------------------------------------------------------
+
+user_category = (
+    full.groupby(
+        ["target_user", "pair_category"],
+        as_index=False,
+    )
+    .agg(
+        n_configurations=("seed", "size"),
+        M6_overall_eer=("M6_overall_eer", "mean"),
+        M7_overall_eer=("M7_overall_eer", "mean"),
+        M8_overall_eer=("M8_overall_eer", "mean"),
+    )
+)
+
+user_category["M7_minus_M8"] = (
+    user_category["M7_overall_eer"]
+    - user_category["M8_overall_eer"]
+)
+
+user_category["RTRL_benefit"] = (
+    user_category["M6_overall_eer"]
+    - user_category["M7_overall_eer"]
+)
+
+user_category["BPTT_benefit"] = (
+    user_category["M6_overall_eer"]
+    - user_category["M8_overall_eer"]
+)
+
+
+coverage = (
+    user_category.groupby("target_user")
+    ["pair_category"]
+    .nunique()
+)
+
+if len(coverage) != 89 or not (coverage == 4).all():
+    fail(
+        "Category-equal view does not have all four "
+        "categories for all 89 users"
+    )
+
+
+user_category_equal = (
+    user_category.groupby(
+        "target_user",
+        as_index=False,
+    )
+    .agg(
+        n_categories=("pair_category", "nunique"),
+        M6_overall_eer=("M6_overall_eer", "mean"),
+        M7_overall_eer=("M7_overall_eer", "mean"),
+        M8_overall_eer=("M8_overall_eer", "mean"),
+    )
+)
+
+user_category_equal["M7_minus_M8"] = (
+    user_category_equal["M7_overall_eer"]
+    - user_category_equal["M8_overall_eer"]
+)
+
+user_category_equal["RTRL_benefit"] = (
+    user_category_equal["M6_overall_eer"]
+    - user_category_equal["M7_overall_eer"]
+)
+
+user_category_equal["BPTT_benefit"] = (
+    user_category_equal["M6_overall_eer"]
+    - user_category_equal["M8_overall_eer"]
+)
+
+
+pair_stats = summarize_user_view(
+    user_pair_weighted,
+    view_name="equal-user_pair-frequency-weighted",
+    seed=100,
+)
+
+category_equal_stats = summarize_user_view(
+    user_category_equal,
+    view_name="equal-user_equal-category-weighted",
+    seed=200,
+)
+
+overall_stats = pd.DataFrame(
+    [pair_stats, category_equal_stats]
+)
+
+
+print()
+print("=== USER-LEVEL PRIMARY VIEW ===")
+
+for row in overall_stats.to_dict("records"):
+    print()
+    print(f"View: {row['view']}")
+    print(f"n users:                 {row['n_users']}")
+    print(
+        f"Mean M7 EER:             "
+        f"{row['M7_mean_eer']:.12f}"
+    )
+    print(
+        f"Mean M8 EER:             "
+        f"{row['M8_mean_eer']:.12f}"
+    )
+    print(
+        f"Mean M7-minus-M8:        "
+        f"{row['mean_M7_minus_M8']:+.12f}"
+    )
+    print(
+        f"EER percentage points:   "
+        f"{row['mean_difference_percentage_points']:+.6f}"
+    )
+    print(
+        f"Median M7-minus-M8:      "
+        f"{row['median_M7_minus_M8']:+.12f}"
+    )
+    print(
+        f"Bootstrap 95% CI:        "
+        f"[{row['bootstrap_ci95_low']:+.12f}, "
+        f"{row['bootstrap_ci95_high']:+.12f}]"
+    )
+    print(
+        f"t-based 95% CI:          "
+        f"[{row['t_ci95_low']:+.12f}, "
+        f"{row['t_ci95_high']:+.12f}]"
+    )
+    print(
+        f"Paired t:                "
+        f"t={row['paired_t_statistic']:+.6f}, "
+        f"p={row['paired_t_pvalue']:.6g}"
+    )
+    print(
+        f"Wilcoxon:                "
+        f"W={row['wilcoxon_statistic']:.6f}, "
+        f"p={row['wilcoxon_pvalue']:.6g}"
+    )
+    print(
+        f"Sign-flip p:             "
+        f"{row['sign_flip_pvalue']:.6g}"
+    )
+    print(
+        f"Cohen's dz:              "
+        f"{row['cohens_dz']:+.6f}"
+    )
+    print(
+        "M7 lower / M8 lower / ties: "
+        f"{row['users_M7_lower']} / "
+        f"{row['users_M8_lower']} / "
+        f"{row['users_tied']}"
+    )
+
+
+# ------------------------------------------------------------------
+# Category-specific equal-user analyses.
+# ------------------------------------------------------------------
+
+category_rows = []
+
+for category_index, category in enumerate(CATEGORIES):
+    subset = (
+        user_category.loc[
+            user_category["pair_category"] == category
+        ]
+        .copy()
+    )
+
+    if len(subset) != 89:
+        fail(
+            f"{category} contains {len(subset)} users; "
+            "expected 89"
+        )
+
+    result = summarize_user_view(
+        subset,
+        view_name=category,
+        seed=1000 + category_index,
+    )
+
+    result["pair_category"] = category
+    category_rows.append(result)
+
+
+category_stats = pd.DataFrame(category_rows)
+
+category_stats["paired_t_pvalue_holm"] = holm_adjust(
+    category_stats["paired_t_pvalue"].tolist()
+)
+
+category_stats["wilcoxon_pvalue_holm"] = holm_adjust(
+    category_stats["wilcoxon_pvalue"].tolist()
+)
+
+category_stats["sign_flip_pvalue_holm"] = holm_adjust(
+    category_stats["sign_flip_pvalue"].tolist()
+)
+
+
+print()
+print("=== USER-LEVEL RESULTS BY DRIFT CATEGORY ===")
+
+for row in category_stats.to_dict("records"):
+    print(
+        f"{row['pair_category']:<16s} | "
+        f"M7={row['M7_mean_eer']:.12f} | "
+        f"M8={row['M8_mean_eer']:.12f} | "
+        f"M7-M8={row['mean_M7_minus_M8']:+.12f} | "
+        f"boot95=[{row['bootstrap_ci95_low']:+.12f}, "
+        f"{row['bootstrap_ci95_high']:+.12f}] | "
+        f"sign-flip Holm p="
+        f"{row['sign_flip_pvalue_holm']:.6g}"
+    )
+
+
+# ------------------------------------------------------------------
+# Write durable audit artifacts.
+# ------------------------------------------------------------------
+
+overall_stats.to_csv(
+    OVERALL_CSV,
+    index=False,
+)
+
+category_stats.to_csv(
+    CATEGORY_CSV,
+    index=False,
+)
+
+user_pair_weighted.to_csv(
+    USER_CSV,
+    index=False,
+)
+
+user_category.to_csv(
+    USER_CATEGORY_CSV,
+    index=False,
+)
+
+
+primary = pair_stats
+
+if (
+    primary["bootstrap_ci95_low"] > 0
+    and primary["bootstrap_ci95_high"] > 0
+):
+    interpretation = (
+        "BPTT has a statistically detectable lower mean EER "
+        "than RTRL at the user level, but the absolute effect "
+        f"is only {primary['mean_difference_percentage_points']:.6f} "
+        "EER percentage points. This is not a formal equivalence test."
+    )
+
+elif (
+    primary["bootstrap_ci95_low"] < 0
+    and primary["bootstrap_ci95_high"] < 0
+):
+    interpretation = (
+        "RTRL has a statistically detectable lower mean EER "
+        "than BPTT at the user level. This is not a formal "
+        "equivalence test."
+    )
+
+else:
+    interpretation = (
+        "The user-level bootstrap confidence interval includes "
+        "zero, so the analysis does not show a statistically "
+        "detectable mean EER difference. This is not a formal "
+        "equivalence test."
+    )
+
+
+report_lines = [
+    "=" * 78,
+    "FULL-COHORT M7–M8 STATISTICAL CLOSURE REPORT",
+    "=" * 78,
+    "",
+    f"Candidate file: {CANDIDATE}",
+    f"Candidate SHA-256: {candidate_hash}",
+    "",
+    "Coverage:",
+    f"  Candidate rows: {len(df):,}",
+    f"  Successful configurations: {len(full):,}",
+    f"  Target users: {full['target_user'].nunique()}",
+    "",
+    "Configuration-weighted descriptive result:",
+    (
+        f"  M6 mean EER: "
+        f"{full['M6_overall_eer'].mean():.15f}"
+    ),
+    (
+        f"  M7 mean EER: "
+        f"{full['M7_overall_eer'].mean():.15f}"
+    ),
+    (
+        f"  M8 mean EER: "
+        f"{full['M8_overall_eer'].mean():.15f}"
+    ),
+    (
+        f"  M7-minus-M8: "
+        f"{configuration_difference.mean():+.15f}"
+    ),
+    (
+        "  User-cluster bootstrap 95% CI: "
+        f"[{cluster_ci_low:+.15f}, "
+        f"{cluster_ci_high:+.15f}]"
+    ),
+    "",
+    "Primary inferential unit:",
+    "  One pair-frequency-weighted mean difference per user.",
+    f"  Users: {primary['n_users']}",
+    (
+        f"  Mean M7-minus-M8: "
+        f"{primary['mean_M7_minus_M8']:+.15f}"
+    ),
+    (
+        f"  EER percentage points: "
+        f"{primary['mean_difference_percentage_points']:+.9f}"
+    ),
+    (
+        "  Bootstrap 95% CI: "
+        f"[{primary['bootstrap_ci95_low']:+.15f}, "
+        f"{primary['bootstrap_ci95_high']:+.15f}]"
+    ),
+    (
+        "  t-based 95% CI: "
+        f"[{primary['t_ci95_low']:+.15f}, "
+        f"{primary['t_ci95_high']:+.15f}]"
+    ),
+    (
+        f"  Paired t: "
+        f"t={primary['paired_t_statistic']:+.9f}, "
+        f"p={primary['paired_t_pvalue']:.12g}"
+    ),
+    (
+        f"  Wilcoxon: "
+        f"W={primary['wilcoxon_statistic']:.9f}, "
+        f"p={primary['wilcoxon_pvalue']:.12g}"
+    ),
+    (
+        f"  Monte Carlo sign-flip p: "
+        f"{primary['sign_flip_pvalue']:.12g}"
+    ),
+    (
+        f"  Cohen's dz: "
+        f"{primary['cohens_dz']:+.9f}"
+    ),
+    "",
+    "Interpretation:",
+    f"  {interpretation}",
+    "",
+    "Important limitation:",
+    (
+        "  No prospective equivalence or noninferiority margin "
+        "was specified. Failure to find a difference must not "
+        "be described as proof of equivalence."
+    ),
+    "",
+    "See accompanying CSV files for the category-equal "
+    "sensitivity analysis and category-specific results.",
+    "",
+]
+
+REPORT.write_text(
+    "\n".join(report_lines),
+    encoding="utf-8",
+)
+
+
+output_files = [
+    REPORT,
+    OVERALL_CSV,
+    CATEGORY_CSV,
+    USER_CSV,
+    USER_CATEGORY_CSV,
+]
+
+with MANIFEST.open(
+    "w",
+    encoding="utf-8",
+) as handle:
+    for path in output_files:
+        handle.write(
+            f"{sha256(path)}  {path.name}\n"
+        )
+
+
+print()
+print("=== INTERPRETATION ===")
+print(interpretation)
+
+print()
+print("=== OUTPUTS ===")
+print(f"Report:                 {REPORT}")
+print(f"Overall statistics:     {OVERALL_CSV}")
+print(f"Category statistics:    {CATEGORY_CSV}")
+print(f"User-level values:      {USER_CSV}")
+print(f"User-category values:   {USER_CATEGORY_CSV}")
+print(f"Manifest:               {MANIFEST}")
+
+print()
+print(
+    "PASS: Full-cohort M7–M8 statistics were computed "
+    "using users as the inferential units, with a "
+    "category-equal sensitivity analysis and user-cluster "
+    "bootstrap."
+)

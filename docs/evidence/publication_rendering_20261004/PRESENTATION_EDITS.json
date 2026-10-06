@@ -1,0 +1,254 @@
+[
+  {
+    "file": "generate_drift_detection_figure.py",
+    "reason": "Output documentation follows new PNG resolution.",
+    "before": "(dpi=150)",
+    "after": "(dpi=300)"
+  },
+  {
+    "file": "generate_drift_detection_figure.py",
+    "reason": "Grayscale fill; retain box statistics and opacity.",
+    "before": "patch.set_facecolor('#4c72b0')",
+    "after": "patch.set_facecolor('0.45')"
+  },
+  {
+    "file": "generate_drift_detection_figure.py",
+    "reason": "Reference title wording; move it inside the canvas.",
+    "before": "'Drift Magnitude by Category (50-Combination Cross-Validation Subset)',\n        y=1.02,",
+    "after": "'Feature-Distribution Separability by Drift Category (50 Selected Combinations)',\n        y=0.98,"
+  },
+  {
+    "file": "generate_drift_detection_figure.py",
+    "reason": "Reserve vertical space for the overall title.",
+    "before": "fig.tight_layout()",
+    "after": "fig.tight_layout(rect=(0, 0, 1, 0.89))"
+  },
+  {
+    "file": "generate_drift_detection_figure.py",
+    "reason": "Publication raster resolution and content-inclusive bounding box.",
+    "before": "fig.savefig(png_path, dpi=150)",
+    "after": "fig.savefig(png_path, dpi=300, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_drift_detection_figure.py",
+    "reason": "Preserve complete title in PDF as well.",
+    "before": "fig.savefig(pdf_path)",
+    "after": "fig.savefig(pdf_path, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_drift_gap_figure.py",
+    "reason": "Output documentation follows new PNG resolution.",
+    "before": "(dpi=150)",
+    "after": "(dpi=300)"
+  },
+  {
+    "file": "generate_drift_gap_figure.py",
+    "reason": "Grayscale bars; histogram input and 20 bins unchanged.",
+    "before": "color='#4c72b0'",
+    "after": "color='0.65'"
+  },
+  {
+    "file": "generate_drift_gap_figure.py",
+    "reason": "Black median line.",
+    "before": "color='red'",
+    "after": "color='black'"
+  },
+  {
+    "file": "generate_drift_gap_figure.py",
+    "reason": "Publication resolution and bounding box.",
+    "before": "fig.savefig(png_path, dpi=150)",
+    "after": "fig.savefig(png_path, dpi=300, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_drift_gap_figure.py",
+    "reason": "Consistent PDF bounding box.",
+    "before": "fig.savefig(pdf_path)",
+    "after": "fig.savefig(pdf_path, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Output documentation follows new PNG resolution.",
+    "before": "(dpi=150)",
+    "after": "(dpi=300)"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Remove obsolete hard-coded console expectation; computed rate unchanged.",
+    "before": "    print(f'    (Results-text claim: ~9.4%)')\n",
+    "after": ""
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Grayscale bars; histogram input and 50 bins unchanged.",
+    "before": "color='#4c72b0'",
+    "after": "color='0.65'"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Black threshold line; threshold remains 0.05.",
+    "before": "color='red'",
+    "after": "color='black'"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Reference legend casing.",
+    "before": "label='no change'",
+    "after": "label='No change'"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Reference legend casing; value still computed.",
+    "before": "label=f'forgetting threshold (+{FORGETTING_THRESHOLD})'",
+    "after": "label=f'Forgetting threshold (+{FORGETTING_THRESHOLD})'"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Reference axis wording.",
+    "before": "ax.set_xlabel('End-of-stream EER change from adaptation (M2 minus M1)')",
+    "after": "ax.set_xlabel('End-of-stream EER difference (M2 - M1)')"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Reference observational-unit wording.",
+    "before": "ax.set_ylabel('Number of experiments')",
+    "after": "ax.set_ylabel('Number of configurations')"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Reference title.",
+    "before": "ax.set_title('Distribution of Adaptation Effect (Main Factorial, M2 vs M1)')",
+    "after": "ax.set_title('Histogram of End-of-Stream EER Differences (M2 - M1)')"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Reference legend placement.",
+    "before": "ax.legend(loc='upper right', frameon=False)",
+    "after": "ax.legend(loc='upper left', frameon=False)"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Publication resolution and bounding box.",
+    "before": "fig.savefig(png_path, dpi=150)",
+    "after": "fig.savefig(png_path, dpi=300, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_forgetting_histogram.py",
+    "reason": "Consistent PDF bounding box.",
+    "before": "fig.savefig(pdf_path)",
+    "after": "fig.savefig(pdf_path, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_m9_sweep_figure.py",
+    "reason": "Output documentation follows new PNG resolution.",
+    "before": "(dpi=150)",
+    "after": "(dpi=300)"
+  },
+  {
+    "file": "generate_m9_sweep_figure.py",
+    "reason": "Grayscale bars; data lookup and order unchanged.",
+    "before": "color='#4c72b0'",
+    "after": "color='0.65'"
+  },
+  {
+    "file": "generate_m9_sweep_figure.py",
+    "reason": "Black baseline; baseline value unchanged.",
+    "before": "color='red'",
+    "after": "color='black'"
+  },
+  {
+    "file": "generate_m9_sweep_figure.py",
+    "reason": "Publication resolution and bounding box.",
+    "before": "fig.savefig(png_path, dpi=150)",
+    "after": "fig.savefig(png_path, dpi=300, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_m9_sweep_figure.py",
+    "reason": "Consistent PDF bounding box.",
+    "before": "fig.savefig(pdf_path)",
+    "after": "fig.savefig(pdf_path, bbox_inches='tight')"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Output documentation follows new PNG resolution.",
+    "before": "PNG (150 dpi)",
+    "after": "PNG (300 dpi)"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Publication raster resolution.",
+    "before": "'savefig.dpi':       150,",
+    "after": "'savefig.dpi':       300,"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Grayscale, distinct marker shapes, no category-order or calculation changes.",
+    "before": "# Sequential viridis encoding (lightest = lowest drift, darkest = highest);\n# distinct in grayscale by luminance ordering.\nCAT_COLORS = {\n    'temporal':       '#fde725',   # viridis yellow (lightest)\n    'cross-activity': '#21918c',   # teal\n    'cross-posture':  '#3b528b',   # blue\n    'cross-both':     '#440154',   # dark purple (darkest)\n}\n\n# Stream-type colors: chosen for greyscale luminance contrast (blue is darker\n# than red in grayscale, so they remain distinguishable when printed B&W).\nSTREAM_COLORS = {\n    'no-drift': '#1f77b4',\n    'drift':    '#d62728',\n}\n\n# Model colors for Figure 5: light vs. dark blue keeps the comparison\n# in one hue (frozen \u2192 adapter as a progression), greyscale-safe by luminance.\nMODEL_COLORS = {\n    'M1 (frozen)':  '#9ecae1',\n    'M4 (adapter)': '#08519c',\n}\n\n",
+    "after": "# Grayscale publication presentation. Scientific category order is unchanged.\nCAT_COLORS = {\n    'temporal':       '0.85',\n    'cross-activity': '0.70',\n    'cross-posture':  '0.55',\n    'cross-both':     '0.40',\n}\nCAT_MARKERS = {\n    'temporal': 'o', 'cross-activity': '^',\n    'cross-posture': 's', 'cross-both': 'D',\n}\nCAT_FACE_COLORS = {\n    'temporal': 'none', 'cross-activity': '0.80',\n    'cross-posture': 'none', 'cross-both': '0.40',\n}\nSTREAM_COLORS = {'no-drift': 'white', 'drift': '0.60'}\nMODEL_COLORS = {'M1 (frozen)': '0.80', 'M4 (adapter)': '0.40'}\n\n"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Publication raster resolution.",
+    "before": "f'{name}.png'), dpi=150)",
+    "after": "f'{name}.png'), dpi=300)"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference control label and hatching.",
+    "before": "color=STREAM_COLORS['no-drift'], label='no-drift',",
+    "after": "color=STREAM_COLORS['no-drift'], hatch='///', label='Control',"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference drift label and hatching.",
+    "before": "color=STREAM_COLORS['drift'], label='drift',",
+    "after": "color=STREAM_COLORS['drift'], hatch='xx', label='Drift',"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference axis capitalization.",
+    "before": "ax.set_ylabel('Adaptation Benefit (EER reduction)')",
+    "after": "ax.set_ylabel('Adaptation benefit (EER reduction)')"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference-like grayscale marker encoding; all point coordinates unchanged.",
+    "before": "        ax.scatter(sub[x_col], sub.benefit_diff, s=10, alpha=0.45,\n                   color=CAT_COLORS[cat], label=cat,\n                   edgecolor='none')",
+    "after": "        ax.scatter(sub[x_col], sub.benefit_diff, s=10, alpha=0.45,\n                   marker=CAT_MARKERS[cat], facecolors=CAT_FACE_COLORS[cat],\n                   label=cat, edgecolors='0.25', linewidths=0.4)"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference control-stream wording.",
+    "before": "ax.set_ylabel('Benefit Difference (drift \u2212 no-drift, EER)')",
+    "after": "ax.set_ylabel('Benefit difference (drift - control, EER)')"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference axis capitalization.",
+    "before": "sa, 'mmd_statistic', 'MMD Statistic'",
+    "after": "sa, 'mmd_statistic', 'MMD statistic'"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Reference axis capitalization.",
+    "before": "sa, 'ks_mean', 'Mean KS Statistic'",
+    "after": "sa, 'ks_mean', 'Mean KS statistic'"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Keep supporting multi-panel title inside canvas; no data change.",
+    "before": "fig.suptitle('Drift Magnitude by Category \u2014 Three Independent Metrics', y=1.02)\n    fig.tight_layout()",
+    "after": "fig.suptitle('Drift Magnitude by Category \u2014 Three Independent Metrics', y=0.98)\n    fig.tight_layout(rect=(0, 0, 1, 0.89))"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Consistent grayscale in supporting histogram.",
+    "before": "ax.hist(diff, bins=80, color='#1f77b4'",
+    "after": "ax.hist(diff, bins=80, color='0.65'"
+  },
+  {
+    "file": "generate_confound_figures.py",
+    "reason": "Consistent black line in supporting histogram.",
+    "before": "ax.axvline(threshold, color='red'",
+    "after": "ax.axvline(threshold, color='black'"
+  }
+]

@@ -1,0 +1,83 @@
+===== M7 REPRODUCTION RUN =====
+Started UTC: 2026-10-03T23:35:31Z
+c9d6f4b1364748a2fc80d9c11894a6e3f654cbf0d40bad1cf5f2d0ebddb11fc7  <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/analysis/reproduce_m7_m8_statistics.py
+Python executable: <COMPUTE_B_HOME>/miniconda/bin/python3
+Python version: 3.13.2
+numpy: 2.2.6
+pandas: 2.2.3
+scipy: 1.15.3
+
+Command: <COMPUTE_B_HOME>/miniconda/bin/python3 -B -u <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/analysis/reproduce_m7_m8_statistics.py --input <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results_stage4_merged_summary_m7_repaired_20260901.csv --output-dir <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results 
+
+==============================================================================
+FULL-COHORT M7–M8 USER-LEVEL STATISTICAL CLOSURE
+==============================================================================
+Candidate:       <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results_stage4_merged_summary_m7_repaired_20260901.csv
+Candidate SHA:   7217062926f755dbbb4259b20b49680a96d4647f1e3651861d52659f9cc3d098
+Candidate rows:  9,558
+Duplicate keys:  0
+
+=== CONFIGURATION-WEIGHTED DESCRIPTIVE VIEW ===
+Configurations:          9,216
+Users:                  89
+M6 mean EER:            0.295290975942
+M7 mean EER:            0.091077444225
+M8 mean EER:            0.090555261218
+Mean M7-minus-M8:       +0.000522183007
+Difference in EER pp:   +0.052218
+User-cluster bootstrap 95% CI: [+0.000393329351, +0.000651326786]
+
+=== USER-LEVEL PRIMARY VIEW ===
+
+View: equal-user_pair-frequency-weighted
+n users:                 89
+Mean M7 EER:             0.091218737683
+Mean M8 EER:             0.090704643691
+Mean M7-minus-M8:        +0.000514093992
+EER percentage points:   +0.051409
+Median M7-minus-M8:      +0.000554541112
+Bootstrap 95% CI:        [+0.000387273361, +0.000641868877]
+t-based 95% CI:          [+0.000384269766, +0.000643918219]
+Paired t:                t=+7.869516, p=8.5523e-12
+Wilcoxon:                W=450.000000, p=2.12858e-10
+Sign-flip p:             4.99998e-06
+Cohen's dz:              +0.834167
+M7 lower / M8 lower / ties: 17 / 72 / 0
+
+View: equal-user_equal-category-weighted
+n users:                 89
+Mean M7 EER:             0.088341572867
+Mean M8 EER:             0.087862750518
+Mean M7-minus-M8:        +0.000478822349
+EER percentage points:   +0.047882
+Median M7-minus-M8:      +0.000449310186
+Bootstrap 95% CI:        [+0.000347880955, +0.000610097150]
+t-based 95% CI:          [+0.000344945280, +0.000612699418]
+Paired t:                t=+7.107706, p=2.95263e-10
+Wilcoxon:                W=480.000000, p=4.69344e-10
+Sign-flip p:             4.99998e-06
+Cohen's dz:              +0.753415
+M7 lower / M8 lower / ties: 13 / 76 / 0
+
+=== USER-LEVEL RESULTS BY DRIFT CATEGORY ===
+temporal         | M7=0.058209103515 | M8=0.057940687200 | M7-M8=+0.000268416315 | boot95=[+0.000080761905, +0.000458292877] | sign-flip Holm p=0.0129199
+cross-posture    | M7=0.101211053323 | M8=0.100733454798 | M7-M8=+0.000477598525 | boot95=[+0.000121622889, +0.000843226572] | sign-flip Holm p=0.0129199
+cross-activity   | M7=0.081200729514 | M8=0.080666088865 | M7-M8=+0.000534640648 | boot95=[+0.000328322710, +0.000748259233] | sign-flip Holm p=1.99999e-05
+cross-both       | M7=0.112745405118 | M8=0.112110771210 | M7-M8=+0.000634633908 | boot95=[+0.000410607839, +0.000868348362] | sign-flip Holm p=1.99999e-05
+
+=== INTERPRETATION ===
+BPTT has a statistically detectable lower mean EER than RTRL at the user level, but the absolute effect is only 0.051409 EER percentage points. This is not a formal equivalence test.
+
+=== OUTPUTS ===
+Report:                 <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results/m7_m8_statistical_closure.txt
+Overall statistics:     <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results/m7_m8_overall_statistics.csv
+Category statistics:    <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results/m7_m8_by_category.csv
+User-level values:      <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results/m7_m8_user_level_values.csv
+User-category values:   <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results/m7_m8_user_category_values.csv
+Manifest:               <COMPUTE_B_HOME>/tifs_m7_reproduction_0q4ruu5n/run_01/results/MANIFEST.sha256
+
+PASS: Full-cohort M7–M8 statistics were computed using users as the inferential units, with a category-equal sensitivity analysis and user-cluster bootstrap.
+
+Analysis exit status: 0
+Elapsed seconds: 2
+Finished UTC: 2026-10-03T23:35:33Z

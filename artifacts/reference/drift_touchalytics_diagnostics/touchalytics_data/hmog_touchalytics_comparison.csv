@@ -1,0 +1,4 @@
+metric,hmog_temporal,touch_temporal,hmog_cross-activity,touch_cross-activity,hmog_cross-both,touch_cross-both
+Mean KS statistic,,0.2288,,0.5325,,0.5651
+Mean classifier accuracy,,0.8832,,0.9752,,0.9850
+Mean MMD,,0.0076,,0.4263,,0.5073

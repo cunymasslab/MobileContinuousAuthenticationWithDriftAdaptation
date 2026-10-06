@@ -1,0 +1,347 @@
+--- source_snapshot/generate_drift_detection_figure.py
++++ publication_draft/generate_drift_detection_figure.py
+@@ -1,3 +1,4 @@
++# Publication-rendering reconstruction, 2026-10-04; not recovered historical code.
+ """
+ generate_drift_detection_figure.py — TIFS figure: drift magnitude by category
+ from the cross-validation subset's drift-detection CSV
+@@ -7,7 +8,7 @@
+     python generate_drift_detection_figure.py results_stage4b_exp1/results_drift_detection.csv
+ 
+ Outputs (figures/ in cwd, created if missing):
+-    figures/drift_detection_boxplots.png   (dpi=150)
++    figures/drift_detection_boxplots.png   (dpi=300)
+     figures/drift_detection_boxplots.pdf
+ """
+ import os
+@@ -160,7 +161,7 @@
+         bp = ax.boxplot(data, labels=plot_cats, patch_artist=True,
+                         widths=0.6, showfliers=True)
+         for patch in bp['boxes']:
+-            patch.set_facecolor('#4c72b0')
++            patch.set_facecolor('0.45')
+             patch.set_alpha(0.65)
+             patch.set_edgecolor('black')
+         for med in bp['medians']:
+@@ -173,15 +174,15 @@
+         ax.spines['right'].set_visible(False)
+ 
+     fig.suptitle(
+-        'Drift Magnitude by Category (50-Combination Cross-Validation Subset)',
+-        y=1.02,
++        'Feature-Distribution Separability by Drift Category (50 Selected Combinations)',
++        y=0.98,
+     )
+-    fig.tight_layout()
++    fig.tight_layout(rect=(0, 0, 1, 0.89))
+ 
+     png_path = os.path.join(FIG_DIR, 'drift_detection_boxplots.png')
+     pdf_path = os.path.join(FIG_DIR, 'drift_detection_boxplots.pdf')
+-    fig.savefig(png_path, dpi=150)
+-    fig.savefig(pdf_path)
++    fig.savefig(png_path, dpi=300, bbox_inches='tight')
++    fig.savefig(pdf_path, bbox_inches='tight')
+     plt.close(fig)
+ 
+     print('Wrote figures:')
+
+--- source_snapshot/generate_drift_gap_figure.py
++++ publication_draft/generate_drift_gap_figure.py
+@@ -1,3 +1,4 @@
++# Publication-rendering reconstruction, 2026-10-04; not recovered historical code.
+ """
+ generate_drift_gap_figure.py — TIFS figure: distribution of drift gaps across
+ user × condition combinations from the cross-validation drift verification
+@@ -7,7 +8,7 @@
+     python generate_drift_gap_figure.py results_stage4b_exp1/results_stage4b_cv_summary.csv
+ 
+ Outputs (figures/ in cwd, created if missing):
+-    figures/drift_gap_distribution.png   (dpi=150)
++    figures/drift_gap_distribution.png   (dpi=300)
+     figures/drift_gap_distribution.pdf
+ """
+ import os
+@@ -135,9 +136,9 @@
+     os.makedirs(FIG_DIR, exist_ok=True)
+ 
+     fig, ax = plt.subplots(figsize=(8, 5))
+-    ax.hist(gap, bins=20, color='#4c72b0', edgecolor='black',
++    ax.hist(gap, bins=20, color='0.65', edgecolor='black',
+             linewidth=0.5, alpha=0.85)
+-    ax.axvline(median_gap, color='red', linestyle='--', linewidth=1.5,
++    ax.axvline(median_gap, color='black', linestyle='--', linewidth=1.5,
+                label=f'median = {median_gap:.3f}')
+     ax.set_xlabel('Drift gap (session-4 EER minus within-distribution EER)')
+     ax.set_ylabel('Number of combinations')
+@@ -149,8 +150,8 @@
+ 
+     png_path = os.path.join(FIG_DIR, 'drift_gap_distribution.png')
+     pdf_path = os.path.join(FIG_DIR, 'drift_gap_distribution.pdf')
+-    fig.savefig(png_path, dpi=150)
+-    fig.savefig(pdf_path)
++    fig.savefig(png_path, dpi=300, bbox_inches='tight')
++    fig.savefig(pdf_path, bbox_inches='tight')
+     plt.close(fig)
+ 
+     print('Wrote figures:')
+
+--- source_snapshot/generate_forgetting_histogram.py
++++ publication_draft/generate_forgetting_histogram.py
+@@ -1,3 +1,4 @@
++# Publication-rendering reconstruction, 2026-10-04; not recovered historical code.
+ """
+ generate_forgetting_histogram.py — TIFS figure: distribution of the adaptation
+ forgetting metric (M2 minus M1 end-of-stream EER) from the main factorial
+@@ -7,7 +8,7 @@
+     python generate_forgetting_histogram.py results_stage4_merged_summary_with_m7.csv
+ 
+ Outputs (figures/ in cwd, created if missing):
+-    figures/forgetting_histogram_m2.png   (dpi=150)
++    figures/forgetting_histogram_m2.png   (dpi=300)
+     figures/forgetting_histogram_m2.pdf
+ """
+ import os
+@@ -82,32 +83,31 @@
+           f'{median_d:+.4f}')
+     print(f'  delta > {FORGETTING_THRESHOLD} (forgetting threshold)        : '
+           f'{n_forget:,}  ({pct_forget:5.1f}%)')
+-    print(f'    (Results-text claim: ~9.4%)')
+     print()
+ 
+     # ── Step 4 — histogram ─────────────────────────────────────────────────
+     os.makedirs(FIG_DIR, exist_ok=True)
+ 
+     fig, ax = plt.subplots(figsize=(8, 5))
+-    ax.hist(delta, bins=50, color='#4c72b0', edgecolor='black',
++    ax.hist(delta, bins=50, color='0.65', edgecolor='black',
+             linewidth=0.5, alpha=0.85)
+     ax.axvline(0.0, color='black', linewidth=1.0,
+-               label='no change')
+-    ax.axvline(FORGETTING_THRESHOLD, color='red', linestyle='--',
++               label='No change')
++    ax.axvline(FORGETTING_THRESHOLD, color='black', linestyle='--',
+                linewidth=1.5,
+-               label=f'forgetting threshold (+{FORGETTING_THRESHOLD})')
+-    ax.set_xlabel('End-of-stream EER change from adaptation (M2 minus M1)')
+-    ax.set_ylabel('Number of experiments')
+-    ax.set_title('Distribution of Adaptation Effect (Main Factorial, M2 vs M1)')
+-    ax.legend(loc='upper right', frameon=False)
++               label=f'Forgetting threshold (+{FORGETTING_THRESHOLD})')
++    ax.set_xlabel('End-of-stream EER difference (M2 - M1)')
++    ax.set_ylabel('Number of configurations')
++    ax.set_title('Histogram of End-of-Stream EER Differences (M2 - M1)')
++    ax.legend(loc='upper left', frameon=False)
+     ax.spines['top'].set_visible(False)
+     ax.spines['right'].set_visible(False)
+     fig.tight_layout()
+ 
+     png_path = os.path.join(FIG_DIR, 'forgetting_histogram_m2.png')
+     pdf_path = os.path.join(FIG_DIR, 'forgetting_histogram_m2.pdf')
+-    fig.savefig(png_path, dpi=150)
+-    fig.savefig(pdf_path)
++    fig.savefig(png_path, dpi=300, bbox_inches='tight')
++    fig.savefig(pdf_path, bbox_inches='tight')
+     plt.close(fig)
+ 
+     print('Wrote figures:')
+
+--- source_snapshot/generate_m9_sweep_figure.py
++++ publication_draft/generate_m9_sweep_figure.py
+@@ -1,3 +1,4 @@
++# Publication-rendering reconstruction, 2026-10-04; not recovered historical code.
+ """
+ generate_m9_sweep_figure.py — TIFS figure: M9 (persistent-state RTRL) mean EER
+ across online learning rates, compared against the M2 per-window baseline.
+@@ -6,7 +7,7 @@
+     python generate_m9_sweep_figure.py results_m9_lr_sweep/comparison.csv
+ 
+ Outputs (figures/ in cwd, created if missing):
+-    figures/m9_lr_sweep.png   (dpi=150)
++    figures/m9_lr_sweep.png   (dpi=300)
+     figures/m9_lr_sweep.pdf
+ """
+ import os
+@@ -106,7 +107,7 @@
+     fig, ax = plt.subplots(figsize=(8, 5))
+     x_pos  = list(range(len(M9_LRS)))
+     values = [m9_means[lr] for lr in M9_LRS]
+-    ax.bar(x_pos, values, width=0.6, color='#4c72b0',
++    ax.bar(x_pos, values, width=0.6, color='0.65',
+            edgecolor='black', linewidth=0.5, alpha=0.85)
+ 
+     # Annotate each M9 bar with its numeric value
+@@ -115,7 +116,7 @@
+                 fontsize=10)
+ 
+     # M2 baseline reference line (dashed)
+-    ax.axhline(m2_baseline, color='red', linestyle='--', linewidth=1.5,
++    ax.axhline(m2_baseline, color='black', linestyle='--', linewidth=1.5,
+                label=f'M2 per-window baseline ({m2_baseline:.3f})')
+ 
+     ax.set_xticks(x_pos)
+@@ -135,8 +136,8 @@
+ 
+     png_path = os.path.join(FIG_DIR, 'm9_lr_sweep.png')
+     pdf_path = os.path.join(FIG_DIR, 'm9_lr_sweep.pdf')
+-    fig.savefig(png_path, dpi=150)
+-    fig.savefig(pdf_path)
++    fig.savefig(png_path, dpi=300, bbox_inches='tight')
++    fig.savefig(pdf_path, bbox_inches='tight')
+     plt.close(fig)
+ 
+     print('Wrote figures:')
+
+--- source_snapshot/generate_confound_figures.py
++++ publication_draft/generate_confound_figures.py
+@@ -1,8 +1,9 @@
++# Publication-rendering reconstruction, 2026-10-04; not recovered historical code.
+ """
+ generate_confound_figures.py — Publication figures for the TIFS confound experiment.
+ 
+ Reads results_confound/results_confound_summary.csv and produces six figures
+-in results_confound/figures/, each saved as both PNG (150 dpi) and PDF.
++in results_confound/figures/, each saved as both PNG (300 dpi) and PDF.
+ 
+ Run from the repo root:
+     python generate_confound_figures.py
+@@ -35,7 +36,7 @@
+     'ytick.labelsize':   10,
+     'legend.fontsize':   10,
+     'figure.dpi':        100,
+-    'savefig.dpi':       150,
++    'savefig.dpi':       300,
+     'savefig.bbox':      'tight',
+     'axes.spines.top':   False,
+     'axes.spines.right': False,
+@@ -43,28 +44,23 @@
+ 
+ CATEGORIES = ['temporal', 'cross-activity', 'cross-posture', 'cross-both']
+ 
+-# Sequential viridis encoding (lightest = lowest drift, darkest = highest);
+-# distinct in grayscale by luminance ordering.
++# Grayscale publication presentation. Scientific category order is unchanged.
+ CAT_COLORS = {
+-    'temporal':       '#fde725',   # viridis yellow (lightest)
+-    'cross-activity': '#21918c',   # teal
+-    'cross-posture':  '#3b528b',   # blue
+-    'cross-both':     '#440154',   # dark purple (darkest)
++    'temporal':       '0.85',
++    'cross-activity': '0.70',
++    'cross-posture':  '0.55',
++    'cross-both':     '0.40',
+ }
+-
+-# Stream-type colors: chosen for greyscale luminance contrast (blue is darker
+-# than red in grayscale, so they remain distinguishable when printed B&W).
+-STREAM_COLORS = {
+-    'no-drift': '#1f77b4',
+-    'drift':    '#d62728',
++CAT_MARKERS = {
++    'temporal': 'o', 'cross-activity': '^',
++    'cross-posture': 's', 'cross-both': 'D',
+ }
+-
+-# Model colors for Figure 5: light vs. dark blue keeps the comparison
+-# in one hue (frozen → adapter as a progression), greyscale-safe by luminance.
+-MODEL_COLORS = {
+-    'M1 (frozen)':  '#9ecae1',
+-    'M4 (adapter)': '#08519c',
++CAT_FACE_COLORS = {
++    'temporal': 'none', 'cross-activity': '0.80',
++    'cross-posture': 'none', 'cross-both': '0.40',
+ }
++STREAM_COLORS = {'no-drift': 'white', 'drift': '0.60'}
++MODEL_COLORS = {'M1 (frozen)': '0.80', 'M4 (adapter)': '0.40'}
+ 
+ N_BOOT = 10000
+ RNG = np.random.default_rng(42)
+@@ -73,7 +69,7 @@
+ # ── Helpers ────────────────────────────────────────────────────────────────
+ 
+ def save_both(fig, name):
+-    fig.savefig(os.path.join(FIG_DIR, f'{name}.png'), dpi=150)
++    fig.savefig(os.path.join(FIG_DIR, f'{name}.png'), dpi=300)
+     fig.savefig(os.path.join(FIG_DIR, f'{name}.pdf'))
+     plt.close(fig)
+ 
+@@ -156,14 +152,14 @@
+     w = 0.35
+ 
+     ax.bar(x - w/2, points(nd), w, yerr=err_lohi(nd), capsize=4,
+-           color=STREAM_COLORS['no-drift'], label='no-drift',
++           color=STREAM_COLORS['no-drift'], hatch='///', label='Control',
+            edgecolor='black', linewidth=0.5)
+     ax.bar(x + w/2, points(dr), w, yerr=err_lohi(dr), capsize=4,
+-           color=STREAM_COLORS['drift'], label='drift',
++           color=STREAM_COLORS['drift'], hatch='xx', label='Drift',
+            edgecolor='black', linewidth=0.5)
+ 
+     ax.set_xticks(x); ax.set_xticklabels(CATEGORIES, rotation=15)
+-    ax.set_ylabel('Adaptation Benefit (EER reduction)')
++    ax.set_ylabel('Adaptation benefit (EER reduction)')
+     ax.set_title('Adaptation Benefit by Drift Category and Stream Type')
+     ax.axhline(0, color='black', linewidth=0.5)
+     ax.legend(loc='upper left', frameon=False)
+@@ -176,8 +172,8 @@
+     for cat in CATEGORIES:
+         sub = df[df.pair_category == cat]
+         ax.scatter(sub[x_col], sub.benefit_diff, s=10, alpha=0.45,
+-                   color=CAT_COLORS[cat], label=cat,
+-                   edgecolor='none')
++                   marker=CAT_MARKERS[cat], facecolors=CAT_FACE_COLORS[cat],
++                   label=cat, edgecolors='0.25', linewidths=0.4)
+     x = df[x_col].to_numpy()
+     y = df.benefit_diff.to_numpy()
+     mask = np.isfinite(x) & np.isfinite(y)
+@@ -189,7 +185,7 @@
+                 label=f'linear fit: slope={slope:+.3f}, r={r:+.2f}')
+     ax.axhline(0, color='gray', linewidth=0.5, linestyle='--')
+     ax.set_xlabel(x_label)
+-    ax.set_ylabel('Benefit Difference (drift − no-drift, EER)')
++    ax.set_ylabel('Benefit difference (drift - control, EER)')
+     ax.set_title(title)
+     ax.legend(loc='upper left', frameon=False, fontsize=9)
+ 
+@@ -202,7 +198,7 @@
+     print(f'  [{name}] seed-averaging and plotting...')
+     sa = seed_averaged(df)
+     fig, ax = plt.subplots(figsize=(8, 5.5))
+-    _scatter_with_fit(ax, sa, 'mmd_statistic', 'MMD Statistic',
++    _scatter_with_fit(ax, sa, 'mmd_statistic', 'MMD statistic',
+                       'Adaptation Benefit Scales with Drift Magnitude (MMD)')
+     fig.tight_layout()
+     save_both(fig, name)
+@@ -216,7 +212,7 @@
+     print(f'  [{name}] seed-averaging and plotting...')
+     sa = seed_averaged(df)
+     fig, ax = plt.subplots(figsize=(8, 5.5))
+-    _scatter_with_fit(ax, sa, 'ks_mean', 'Mean KS Statistic',
++    _scatter_with_fit(ax, sa, 'ks_mean', 'Mean KS statistic',
+                       'Adaptation Benefit Scales with Drift Magnitude (KS)')
+     fig.tight_layout()
+     save_both(fig, name)
+@@ -245,8 +241,8 @@
+         ax.set_ylabel(label)
+         ax.set_title(label)
+         ax.tick_params(axis='x', rotation=15)
+-    fig.suptitle('Drift Magnitude by Category — Three Independent Metrics', y=1.02)
+-    fig.tight_layout()
++    fig.suptitle('Drift Magnitude by Category — Three Independent Metrics', y=0.98)
++    fig.tight_layout(rect=(0, 0, 1, 0.89))
+     save_both(fig, name)
+ 
+ 
+@@ -290,11 +286,11 @@
+     median_diff    = float(np.median(diff))
+ 
+     fig, ax = plt.subplots(figsize=(8, 5))
+-    ax.hist(diff, bins=80, color='#1f77b4', alpha=0.78,
++    ax.hist(diff, bins=80, color='0.65', alpha=0.78,
+             edgecolor='black', linewidth=0.3)
+     ax.axvline(0, color='black', linewidth=0.7,
+                label=f'no change (median observed: {median_diff:+.3f})')
+-    ax.axvline(threshold, color='red', linewidth=1.4, linestyle='--',
++    ax.axvline(threshold, color='black', linewidth=1.4, linestyle='--',
+                label=f'forgetting threshold (+{threshold})')
+     ax.set_xlabel('M4 EER − M1 EER on drift stream\n(negative = adaptation helped)')
+     ax.set_ylabel('Number of experiments')

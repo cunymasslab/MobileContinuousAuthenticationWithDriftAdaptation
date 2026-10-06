@@ -1,0 +1,191 @@
+{
+  "started_utc": "2026-10-04T22:28:53.225043+00:00",
+  "python": "3.13.2",
+  "interpreter": "<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python",
+  "platform": "Linux-6.8.0-124-generic-x86_64-with-glibc2.35",
+  "packages": {
+    "numpy": "2.2.6",
+    "pandas": "2.2.3",
+    "scipy": "1.15.3",
+    "matplotlib": "3.10.3",
+    "pillow": "12.3.0"
+  },
+  "original_source_commit": "5cda80ad8d53777e7c458b8bfba9589b1471c636",
+  "draft_status": "new presentation-only reconstruction, not historical-source recovery",
+  "input_manifest_sha256": "52dd13f56ffcaabb947381411cfe06569898da47a35a5d78f1a229077d1ec3b0",
+  "tasks": [
+    {
+      "id": "drift_detection",
+      "variant": "original",
+      "command": [
+        "<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python",
+        "-I",
+        "-B",
+        "-u",
+        "capture_plot_data.py",
+        "generate_drift_detection_figure.py",
+        "inputs/results_drift_detection.csv"
+      ],
+      "exit_status": 0,
+      "elapsed_seconds": 1.27,
+      "staged_files_changed": [],
+      "missing_outputs": [],
+      "staged_sha256": {
+        "generate_drift_detection_figure.py": "82527e8337a25033b0694075e0be9b6e22e3081d359e1b592096cb5de7f38a4f",
+        "capture_plot_data.py": "34e15d83021aea60ca9a3a9c12542145f757a606653ded3bac493d10301373a3",
+        "inputs/results_drift_detection.csv": "d21cc7f8f85da60aac8c1c5725e41aed655ccb6395102f643b026a402628babe"
+      }
+    },
+    {
+      "id": "drift_detection",
+      "variant": "draft",
+      "command": [
+        "<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python",
+        "-I",
+        "-B",
+        "-u",
+        "capture_plot_data.py",
+        "generate_drift_detection_figure.py",
+        "inputs/results_drift_detection.csv"
+      ],
+      "exit_status": 0,
+      "elapsed_seconds": 1.42,
+      "staged_files_changed": [],
+      "missing_outputs": [],
+      "staged_sha256": {
+        "generate_drift_detection_figure.py": "f7e9e3d257575fddd2da4c361fdf10f87fb7be5710c6cec7500084b5139af64a",
+        "capture_plot_data.py": "34e15d83021aea60ca9a3a9c12542145f757a606653ded3bac493d10301373a3",
+        "inputs/results_drift_detection.csv": "d21cc7f8f85da60aac8c1c5725e41aed655ccb6395102f643b026a402628babe"
+      }
+    },
+    {
+      "id": "matched_stream",
+      "variant": "original",
+      "command": [
+        "<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python",
+        "-I",
+        "-B",
+        "-u",
+        "capture_plot_data.py",
+        "generate_confound_figures.py"
+      ],
+      "exit_status": 0,
+      "elapsed_seconds": 36.048,
+      "staged_files_changed": [],
+      "missing_outputs": [],
+      "staged_sha256": {
+        "generate_confound_figures.py": "987a52041aa549562227b677e125e73f303871bba9c5a213ddf900c0930adb06",
+        "capture_plot_data.py": "34e15d83021aea60ca9a3a9c12542145f757a606653ded3bac493d10301373a3",
+        "results_confound/results_confound_summary.csv": "f1a5f9843df2d2a59fafcddc191eab41a8da12a0f551070c49422e6548047bb1"
+      }
+    },
+    {
+      "id": "matched_stream",
+      "variant": "draft",
+      "command": [
+        "<COMPUTE_B_HOME>/tifs_matched_stream_env/bin/python",
+        "-I",
+        "-B",
+        "-u",
+        "capture_plot_data.py",
+        "generate_confound_figures.py"
+      ],
+      "exit_status": 0,
+      "elapsed_seconds": 36.251,
+      "staged_files_changed": [],
+      "missing_outputs": [],
+      "staged_sha256": {
+        "generate_confound_figures.py": "94387b24ffc68d94a2a6d906844c91799fefebb0a700b5fe80e234a41bd6df16",
+        "capture_plot_data.py": "34e15d83021aea60ca9a3a9c12542145f757a606653ded3bac493d10301373a3",
+        "results_confound/results_confound_summary.csv": "f1a5f9843df2d2a59fafcddc191eab41a8da12a0f551070c49422e6548047bb1"
+      }
+    }
+  ],
+  "numeric_comparisons": [
+    {
+      "task": "drift_detection",
+      "comparison_scope": "original vs draft plotted geometry and data, not historical reference values",
+      "exact_numeric_payload_equal": true,
+      "original_trace_sha256": "f415a0a468b063cd0b11b69d37383f9ab2958e694428be3cbf2a2a2af3b0f754",
+      "draft_trace_sha256": "f415a0a468b063cd0b11b69d37383f9ab2958e694428be3cbf2a2a2af3b0f754"
+    },
+    {
+      "task": "matched_stream",
+      "comparison_scope": "original vs draft plotted geometry and data, not historical reference values",
+      "exact_numeric_payload_equal": true,
+      "original_trace_sha256": "fcb57831c5bbcb1e99dba16a63577876ca85a0968b55c01fe99f86f4bb299ef5",
+      "draft_trace_sha256": "fcb57831c5bbcb1e99dba16a63577876ca85a0968b55c01fe99f86f4bb299ef5"
+    }
+  ],
+  "image_comparisons": [
+    {
+      "image": "drift_detection_boxplots.png",
+      "reference_sha256": "ae8b86bc96a78d0afe3b8f32c42b763626a80bee7bd1ee8784a720bcd5a9c9ff",
+      "draft_sha256": "4818e514fd56a18bdaa33698fe167b716c52fd66098963f36a60050cf0dfc165",
+      "byte_identical": false,
+      "reference_dimensions": [
+        1950,
+        774
+      ],
+      "draft_dimensions": [
+        3870,
+        1426
+      ],
+      "exact_decoded_pixel_match": false,
+      "status": "visual review still required"
+    },
+    {
+      "image": "paired_bar_v2.png",
+      "reference_sha256": "8736cc9a9ea034a4fcb00f0c736fe09253ca14182f6574af9d614bd85270922a",
+      "draft_sha256": "bdd0c7c8382bff0908785a412abcecd2b98aa0961d2dda002ae98f23d4179507",
+      "byte_identical": false,
+      "reference_dimensions": [
+        2172,
+        1368
+      ],
+      "draft_dimensions": [
+        2355,
+        1460
+      ],
+      "exact_decoded_pixel_match": false,
+      "status": "visual review still required"
+    },
+    {
+      "image": "benefit_diff_vs_mmd_v2.png",
+      "reference_sha256": "238b3067f43a89ddb3e98c0741d1a808a0295bcfedbe87f7d364e28a6d21e1c1",
+      "draft_sha256": "10cd23cf262f7f3065d131169c27f2317a650f63882340060b0e54ad6fa74706",
+      "byte_identical": false,
+      "reference_dimensions": [
+        2171,
+        1484
+      ],
+      "draft_dimensions": [
+        2355,
+        1604
+      ],
+      "exact_decoded_pixel_match": false,
+      "status": "visual review still required"
+    },
+    {
+      "image": "benefit_diff_vs_ks_v2.png",
+      "reference_sha256": "d164ad28b02b072b8f2ccdcf1ea3ca8c4e9da994964b5fc645a5a33e973e61cb",
+      "draft_sha256": "82dfe16ae3a7a908bb6e0e0a434d407ad0b68ceeba17427fb6774d6dacdb9e68",
+      "byte_identical": false,
+      "reference_dimensions": [
+        2169,
+        1484
+      ],
+      "draft_dimensions": [
+        2352,
+        1604
+      ],
+      "exact_decoded_pixel_match": false,
+      "status": "visual review still required"
+    }
+  ],
+  "all_executions_ok": true,
+  "all_original_vs_draft_numeric_payloads_equal": true,
+  "all_draft_vs_manuscript_pngs_pixel_identical": false,
+  "finished_utc": "2026-10-04T22:30:08.547666+00:00",
+  "boundary": "New numeric-regression check is separate from the unchanged strict image comparison. Reference statistical plot data are not reconstructed from pixels. No pixel failure is overridden. No model training, hypothesis testing beyond computations already in the plotting scripts, manuscript editing or repository writing was performed. PDFs are generated but not reference-compared."
+}
