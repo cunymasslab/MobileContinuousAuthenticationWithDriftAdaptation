@@ -1,9 +1,46 @@
-joblib==1.5.3
-numpy==2.4.2
-pandas==3.0.1
+# Reviewer environment: CPython 3.13.2, Linux x86_64, CPU only.
+# Platform used for the recorded compatibility check: glibc 2.35.
+# Complete pip freeze --all version record for that environment, including
+# pip and pip-chill (setup/export tools). This is not the historical
+# training environment, a cross-platform lockfile, or a wheel-hash lock.
+#
+# IMPORTANT: install torch==2.7.0+cpu from the official PyTorch CPU index
+# FIRST, then install this file from PyPI. Follow the README setup sequence.
+# The +cpu build is not supplied by the default PyPI index.
+#
+# The environment was checked on 2026-10-20; project source: 1ad1fcc846a5ee1e709a22308b2a6b6d5de923f5.
+contourpy==1.4.0
+cycler==0.12.1
+filelock==3.32.3
+fonttools==4.67.0
+fsspec==2026.7.0
+Jinja2==3.1.6
+joblib==1.5.1
+kiwisolver==1.5.1
+MarkupSafe==3.0.3
+matplotlib==3.10.3
+mpmath==1.3.0
+networkx==3.6.1
+numpy==2.2.6
+packaging==26.3
+pandas==2.2.3
+patsy==1.0.1
+pillow==13.0.0
+pip==25.0
+pip-chill==1.0.5
+pyparsing==3.3.3
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.1
-scikit-learn==1.8.0
-scipy==1.17.1
+pytz==2026.5
+scikit-learn==1.6.1
+scipy==1.15.3
+seaborn==0.13.2
+setuptools==78.1.0
 six==1.17.0
-threadpoolctl==3.6.0
+statsmodels==0.14.5
+sympy==1.14.0
+threadpoolctl==3.7.0
+torch==2.7.0+cpu
+tqdm==4.67.1
+typing_extensions==4.16.0
+tzdata==2026.5

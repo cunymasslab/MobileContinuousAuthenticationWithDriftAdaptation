@@ -4,6 +4,91 @@ Replication code for evaluating window-based incremental adaptation under behavi
 
 This repository accompanies the manuscript by Avinash Jairam, Hui Chen, and Theodore Raphan. It studies whether later-session and cross-condition behavior degrades frozen authentication models, whether incremental adaptation recovers performance, whether that benefit exceeds additional labeled-data exposure alone, and how RTRL and BPTT compare under the same finite-window update protocol.
 
+## Python environment and installation
+
+**Tested interpreter: CPython 3.13.2.** The newly assembled reviewer environment
+uses **Linux x86_64 (glibc 2.35)** and **PyTorch 2.7.0+cpu**. It does not require
+CUDA. This is a CPU reviewer environment, not a recovered historical
+model-training environment. Native Windows, macOS, other Python versions and
+GPU installations have not been validated by this check.
+
+The root [`requirements.txt`](requirements.txt) now records all **35 installed
+package versions**, including the setup/export tools, from the environment used
+for the focused compatibility check. It replaces the provisional dependency
+list. The three-line `pip-chill` export was insufficient for this project, so
+the complete `pip freeze --all` record is used instead. The older
+[`requirements/reanalysis-python313.txt`](requirements/reanalysis-python313.txt)
+remains an unchanged record of the separate October 3–4 reanalysis environment;
+do not install both specifications into one environment.
+
+### Create an isolated environment
+
+The following is a **Bash/Linux** setup sequence, run from the repository root
+with CPython 3.13.2 already installed. If that interpreter has a different
+executable name, substitute its path for `python3.13`. The version check stops
+rather than silently using a different interpreter.
+
+**Install the CPU build of PyTorch first, from its official index.**
+Then use PyPI for the remaining pinned packages. Do not omit the PyTorch step:
+`torch==2.7.0+cpu` is not available from the default PyPI index.
+
+```bash
+(
+set -euo pipefail
+
+python3.13 -c 'import platform, sys; ok = sys.version_info[:3] == (3, 13, 2) and platform.system() == "Linux" and platform.machine() == "x86_64"; print("Python:", platform.python_version(), "| Platform:", platform.system(), platform.machine()); sys.exit(0 if ok else "Use CPython 3.13.2 on Linux x86_64 for this specification.")'
+
+if [ -e .venv ] || [ -L .venv ]; then
+    printf 'STOP: .venv already exists. Use a fresh checkout or a new environment path.\n' >&2
+    exit 1
+fi
+
+python3.13 -m venv .venv
+export PIP_CONFIG_FILE=/dev/null
+
+.venv/bin/python -I -B -m pip --isolated --require-virtualenv install \
+    --only-binary=:all: --index-url https://pypi.org/simple "pip==25.0"
+
+.venv/bin/python -I -B -m pip --isolated --require-virtualenv install \
+    --only-binary=:all: --index-url https://download.pytorch.org/whl/cpu \
+    "torch==2.7.0+cpu"
+
+.venv/bin/python -I -B -m pip --isolated --require-virtualenv install \
+    --only-binary=:all: --index-url https://pypi.org/simple \
+    --requirement requirements.txt
+
+.venv/bin/python -I -B -m pip --isolated --require-virtualenv check
+)
+```
+
+Use `.venv/bin/python` for the commands in the reproduction guide. Alternatively,
+activate the environment with `source .venv/bin/activate` and use `python`.
+Do not commit the `.venv` directory or replace a working historical environment.
+
+### Scope of the environment check
+
+The candidate environment was built in a new `venv` using explicit project
+version pins and the official CPU PyTorch installation route. `pip check` and
+imports of the 12 explicitly requested project libraries passed. The subsequent
+2026-10-20 maintainer-run compatibility check at organization-repository commit
+`1ad1fcc846a5ee1e709a22308b2a6b6d5de923f5` reported **nine completed commands** and
+unchanged tracked source and staged inputs: four numerical-test programs, three
+self-contained analyses, the matched-stream report and the M9 figure generator.
+The GRU test includes a small synthetic training comparison, not a raw-dataset
+experiment.
+
+The complete requirements file was assembled from the installed-version export
+after environment creation. Its full-pin installation sequence has not yet
+been replayed in a second fresh environment. A version export is not a
+solver-generated or hash-locked environment, and package availability can
+change.
+
+This check establishes scoped execution compatibility, **not** full
+HMOG/Touchalytics retraining or exact scientific-output/image equality.
+The matched-stream report still emitted its boundary and non-positive-definite
+Hessian warnings. Those warnings are not resolved by successful installation.
+The detailed reproduction guide retains the earlier output-comparison limits.
+
 ## Experimental protocol
 
 The primary experiments use HMOG smartphone motion-sensor data. For each activity-posture condition, the first three available sessions provide offline-training data and the condition-specific fourth session provides the streaming evaluation data. Streams are balanced between legitimate and impostor windows. Each model scores a non-overlapping 100-timestep window before any update is made.
