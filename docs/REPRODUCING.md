@@ -12,11 +12,66 @@ This was a **fresh source snapshot in an existing Linux environment**, not a fre
 
 | Record | Versions and scope |
 |---|---|
-| Historical model training | Not established by this package; neither requirements file is asserted to be its lock file. |
+| Historical model training | Not established by this package; neither requirements specification is asserted to be its lock file. |
 | Recorded October 3–4 reanalysis | CPython 3.13.2; NumPy 2.2.6; Pandas 2.2.3; SciPy 1.15.3. Matched-stream/figure runs additionally used Matplotlib 3.10.3, Statsmodels 0.14.5 and Patsy 1.0.1. |
 | October 5 source-snapshot execution | CPython 3.13.5, Linux x86_64; NumPy 2.3.5; Pandas 2.2.3; SciPy 1.17.0; Matplotlib 3.10.8; PyTorch 2.10.0+cpu; Statsmodels 0.14.6; Patsy 1.0.2. Existing installations were used; nothing was installed or upgraded for this check. |
+| October 20 CPU reviewer environment | CPython 3.13.2, Linux x86_64 (glibc 2.35); NumPy 2.2.6; Pandas 2.2.3; SciPy 1.15.3; PyTorch 2.7.0+cpu; scikit-learn 1.6.1; Matplotlib 3.10.3; Seaborn 0.13.2; Statsmodels 0.14.5; Patsy 1.0.1; python-dotenv 1.2.1; Joblib 1.5.1; tqdm 4.67.1. Fresh environment and focused execution check; details below. |
 
-The root `requirements.txt` is provisional and omits some imported libraries. Do not use it as a verified all-in-one installation recipe. The [recorded reanalysis version list](../requirements/reanalysis-python313.txt) and [installation records](evidence/reproduction_20261004/records/environment/) remain unchanged. Fresh installation from the exported full list is not established by the October 5 test, and that list alone does not supply PyTorch for numerical tests. Use a separately prepared environment; do not replace a working environment to modernize dependencies.
+For the newly assembled CPU reviewer environment, follow the
+[Python environment and installation section in the root README](../README.md#python-environment-and-installation).
+It specifies CPython **3.13.2**, Linux x86_64 (observed glibc 2.35), and
+PyTorch **2.7.0+cpu**. Install PyTorch from its official CPU index first, then
+install the root `requirements.txt` from PyPI. The root file now records the
+**35 installed versions** exported from that environment, including pip and
+pip-chill; it replaces the provisional root dependency list.
+
+The separate [October 3–4 reanalysis version list](../requirements/reanalysis-python313.txt)
+and [installation records](evidence/reproduction_20261004/records/environment/)
+remain unchanged. Neither those records nor the new requirements file establish
+the original training environment. Do not combine the two version lists or
+modify a preserved working environment to modernize its dependencies.
+
+### October 20 CPU environment compatibility check
+
+The environment was installed in a fresh `venv` using 12 explicit project
+package pins, with CPU PyTorch obtained separately from its official index.
+The installed-package consistency check (`pip check`) and the 12 library
+imports passed. The full 35-package version record was exported after that
+installation. The newly packaged full-pin installation sequence has not yet
+been replayed in a second fresh environment; it is not a wheel-hash lock or a
+claim of cross-platform installation support.
+
+The maintainer-run check used organization-repository commit
+`1ad1fcc846a5ee1e709a22308b2a6b6d5de923f5` (tree
+`4e1552e88d04e0a44c95b81ce3d701cde34fcd54`). Its completion summary reports nine
+completed commands, no missing required outputs, and unchanged tracked source
+and staged inputs. The command set was:
+
+| Scope | Commands |
+|---|---|
+| Numerical tests | `test_gru_forward.py`, `test_gru_rtrl.py`, `tests/test_rtrl_persistent.py`, `tests/test_rtrl_persistent_gradcheck.py` |
+| Self-contained analyses | `analysis/reproduce_summary_tables.py`, `analysis/reproduce_m9_user_statistics.py`, `analysis/reproduce_touchalytics_statistics.py` |
+| Matched-stream analysis | `analyze_confound.py`, with copies of the reference CSVs staged in a separate working directory |
+| Figure execution | `analysis/publication_figures/generate_m9_sweep_figure.py`, with outputs in a new working directory |
+
+The reviewed terminal excerpt contains the end of the matched-stream report,
+the M9 figure output and the final nine-command completion summary; it is not a
+complete transcript of all nine individual command logs. Full per-command logs
+remain in the maintainer's private check directory. No private paths or logs are
+added here.
+
+This was a scoped compatibility check, not an exact comparison of scientific
+outputs or figures. M7–M8 statistical reanalysis and the other four publication
+renderer entry points were not included in this nine-command run. The
+matched-stream report still showed boundary and non-positive-definite Hessian
+warnings. The four numerical tests use synthetic inputs; the GRU test includes
+its small existing offline-training comparison. No HMOG or Touchalytics
+raw-dataset training experiments were rerun.
+
+Use `.venv/bin/python` instead of `python` in subsequent commands, or activate
+the new environment first. Keep the isolated-output precautions below. The
+October 20 record does not replace or extend the earlier historical checks or
+their equality criteria.
 
 ### Output comparisons in the October 5 environment
 
